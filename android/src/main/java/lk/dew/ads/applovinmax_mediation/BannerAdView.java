@@ -27,10 +27,11 @@ import com.applovin.sdk.AppLovinAdSize;
 import java.util.HashMap;
 
 import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 
-public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdViewAdListener,AppLovinAdClickListener, AppLovinAdDisplayListener,
-        AppLovinAdViewEventListener, AppLovinAdLoadListener {
+public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdViewAdListener {
     final static String TAG = "FLUTTER APPLOVIN : - ";
     final int viewId;
     final MaxAdView bannerView;
@@ -39,9 +40,11 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     int width;
     String adUnitId;
     final ApplovinMaxMediationPlugin instance;
+    final MethodChannel bannerChannel;
 
     public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
         android.util.Log.d(TAG, "BannerAdView: "+viewId);
+        this.bannerChannel = new MethodChannel(instance.bindingInstance.getBinaryMessenger(),"banner");
         this.instance = instance;
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -68,6 +71,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
         this.bannerView.loadAd();
         Log.d(TAG, "BannerAdView: SETTING UP TEST CALLBACK");
         instance.callback("02242","Banner load called",null);
+        bannerChannel.invokeMethod("test","THIS IS TEST");
     }
 
     public boolean isTablet(Context context) {
@@ -142,48 +146,48 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
         instance.callback(adUnitId,"onAdLoadFailed",err);
     }
 
-    @Override
-    public void adOpenedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
-        
-    }
-
-    @Override
-    public void adClosedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
-
-    }
-
-    @Override
-    public void adLeftApplication(AppLovinAd ad, AppLovinAdView adView) {
-
-    }
-
-    @Override
-    public void adFailedToDisplay(AppLovinAd ad, AppLovinAdView adView, AppLovinAdViewDisplayErrorCode code) {
-        Log.d(TAG, "adFailedToDisplay: APPLOVINMAXISTNER 2");
-    }
-
-    @Override
-    public void adClicked(AppLovinAd ad) {
-        Log.d(TAG, "adClicked: APPLOVINMAXISTNER 2");
-    }
-
-    @Override
-    public void adDisplayed(AppLovinAd ad) {
-        Log.d(TAG, "adDisplayed: APPLOVINMAXISTNER 2");
-    }
-
-    @Override
-    public void adHidden(AppLovinAd ad) {
-        Log.d(TAG, "adHidden: APPLOVINMAXISTNER 2");
-    }
-
-    @Override
-    public void adReceived(AppLovinAd ad) {
-        Log.d(TAG, "adReceived: APPLOVINMAXISTNER 2");
-    }
-
-    @Override
-    public void failedToReceiveAd(int errorCode) {
-        Log.d(TAG, "failedToReceiveAd: APPLOVINMAXISTNER 2"); //
-    }
+//    @Override
+//    public void adOpenedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
+//
+//    }
+//
+//    @Override
+//    public void adClosedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
+//
+//    }
+//
+//    @Override
+//    public void adLeftApplication(AppLovinAd ad, AppLovinAdView adView) {
+//
+//    }
+//
+//    @Override
+//    public void adFailedToDisplay(AppLovinAd ad, AppLovinAdView adView, AppLovinAdViewDisplayErrorCode code) {
+//        Log.d(TAG, "adFailedToDisplay: APPLOVINMAXISTNER 2");
+//    }
+//
+//    @Override
+//    public void adClicked(AppLovinAd ad) {
+//        Log.d(TAG, "adClicked: APPLOVINMAXISTNER 2");
+//    }
+//
+//    @Override
+//    public void adDisplayed(AppLovinAd ad) {
+//        Log.d(TAG, "adDisplayed: APPLOVINMAXISTNER 2");
+//    }
+//
+//    @Override
+//    public void adHidden(AppLovinAd ad) {
+//        Log.d(TAG, "adHidden: APPLOVINMAXISTNER 2");
+//    }
+//
+//    @Override
+//    public void adReceived(AppLovinAd ad) {
+//        Log.d(TAG, "adReceived: APPLOVINMAXISTNER 2");
+//    }
+//
+//    @Override
+//    public void failedToReceiveAd(int errorCode) {
+//        Log.d(TAG, "failedToReceiveAd: APPLOVINMAXISTNER 2"); //
+//    }
 }
