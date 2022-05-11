@@ -36,7 +36,10 @@ class ApplovinMaxMediation {
     Function(MaxError? error)? onAdFailedToDisplay,
   }) {
     _channel.setMethodCallHandler((MethodCall call) async {
-      print("APPLOVINMAXLISTNER" + " setBannerAdCalbacks Called..."); //
+      print("APPLOVINMAXLISTNER" + " setBannerAdCalbacks Called...");
+      print("APPLOVINMAXISTNER " + call.method.toString());
+      print("APPLOVINMAXISTNER " + call.arguments.toString());
+      //
       if (call.method == adUnitId) {
         switch (call.arguments.get('callback')) {
           case 'onAdLoaded':

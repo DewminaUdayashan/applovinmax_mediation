@@ -29,7 +29,8 @@ import java.util.HashMap;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.platform.PlatformView;
 
-public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdViewAdListener {
+public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdViewAdListener,AppLovinAdClickListener, AppLovinAdDisplayListener,
+        AppLovinAdViewEventListener, AppLovinAdLoadListener {
     final static String TAG = "FLUTTER APPLOVIN : - ";
     final int viewId;
     final MaxAdView bannerView;
@@ -100,30 +101,87 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     @Override
     public void onAdLoaded(MaxAd ad) {
         Log.d(TAG, "onAdLoaded: APPLOVINMAXISTNER");
+        instance.callback(ad.getAdUnitId(),"onAdLoaded",null);
     }
 
     @Override
     public void onAdDisplayed(MaxAd ad) {
-
+        Log.d(TAG, "onAdDisplayed: APPLOVINMAXISTNER");
+        instance.callback(ad.getAdUnitId(),"onAdDisplayed",null);
     }
 
     @Override
     public void onAdHidden(MaxAd ad) {
         Log.d(TAG, "onAdHidden: APPLOVINMAXISTNER");
+        instance.callback(ad.getAdUnitId(),"onAdHidden",null);
     }
 
     @Override
     public void onAdClicked(MaxAd ad) {
         Log.d(TAG, "onAdClicked: APPLOVINMAXISTNER");
+        instance.callback(ad.getAdUnitId(),"onAdClicked",null);
     }
 
     @Override
     public void onAdLoadFailed(String adUnitId, MaxError error) {
         Log.d(TAG, "onAdLoadFailed: APPLOVINMAXISTNER");
+        HashMap err = new HashMap<String,String>();
+        err.put("code",error.getCode());
+        err.put("message",error.getMessage());
+        instance.callback(adUnitId,"onAdLoadFailed",err);
     }
 
     @Override
     public void onAdDisplayFailed(MaxAd ad, MaxError error) {
         Log.d(TAG, "onAdDisplayFailed: APPLOVINMAXISTNER");
+        HashMap err = new HashMap<String,String>();
+        err.put("code",error.getCode());
+        err.put("message",error.getMessage());
+        instance.callback(adUnitId,"onAdLoadFailed",err);
+    }
+
+    @Override
+    public void adOpenedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
+        
+    }
+
+    @Override
+    public void adClosedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
+
+    }
+
+    @Override
+    public void adLeftApplication(AppLovinAd ad, AppLovinAdView adView) {
+
+    }
+
+    @Override
+    public void adFailedToDisplay(AppLovinAd ad, AppLovinAdView adView, AppLovinAdViewDisplayErrorCode code) {
+        Log.d(TAG, "adFailedToDisplay: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adClicked(AppLovinAd ad) {
+        Log.d(TAG, "adClicked: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adDisplayed(AppLovinAd ad) {
+        Log.d(TAG, "adDisplayed: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adHidden(AppLovinAd ad) {
+        Log.d(TAG, "adHidden: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adReceived(AppLovinAd ad) {
+        Log.d(TAG, "adReceived: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void failedToReceiveAd(int errorCode) {
+        Log.d(TAG, "failedToReceiveAd: APPLOVINMAXISTNER 2"); //
     }
 }
