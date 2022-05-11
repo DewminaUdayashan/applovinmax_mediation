@@ -82,7 +82,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
         final String TAG = "APPLOVINMAXLISTNER";
-        final HashMap data = new HashMap<String, String>();
+        final HashMap data = new HashMap();
         data.put("callback", callback);
         if (error != null) {
             data.put("error", error);
