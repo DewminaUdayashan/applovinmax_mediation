@@ -2,8 +2,10 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinSdk;
@@ -25,6 +27,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
   private ApplovinMaxMediationPlugin instance;
   public  Context context;
   private MethodChannel channel;
+  private MethodChannel bannerChannel;
   public Activity activity;
   public FlutterPluginBinding bindingInstance;
 
@@ -33,6 +36,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     context = flutterPluginBinding.getApplicationContext();
     bindingInstance = flutterPluginBinding;
     channel = new MethodChannel(bindingInstance.getBinaryMessenger(), "applovinmax_mediation");
+    bannerChannel = new MethodChannel(bindingInstance.getBinaryMessenger(), "applovinmax_mediation/banner");
     channel.setMethodCallHandler(this);
     if (instance == null) {
       instance = new ApplovinMaxMediationPlugin();
@@ -80,13 +84,29 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
 
   public void callback(String adUnitId,String callback, HashMap<String,String> error){
+    final String TAG = "APPLOVINMAXLISTNER";
     final HashMap data  = new HashMap<String,String>();
     data.put("callback",callback);
     if(error!=null){
       data.put("error",error);
     }
-    if(channel!=null)
-    channel.invokeMethod(adUnitId,data);
+    if(bannerChannel!=null)
+      bannerChannel.invokeMethod(adUnitId, data, new Result() {
+        @Override
+        public void success(@Nullable Object result) {
+          Log.d(TAG, "success: callback");
+        }
+
+        @Override
+        public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+          Log.d(TAG, "error: callback"+errorCode+" "+errorMessage);
+        }
+
+        @Override
+        public void notImplemented() {
+          Log.d(TAG, "notImplemented: callback");
+        }
+      });
   }
 
   public void registerBannerFactory(PlatformViewRegistry registry) {
