@@ -66,6 +66,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
         bannerView.setLayoutParams( new FrameLayout.LayoutParams(size.getWidth(),size.getWidth()));
         bannerView.setGravity(Gravity.CENTER);
         this.bannerView.loadAd();
+        Log.d(TAG, "BannerAdView: SETTING UP TEST CALLBACK");
         instance.callback("02242","Banner load called",null);
     }
 
