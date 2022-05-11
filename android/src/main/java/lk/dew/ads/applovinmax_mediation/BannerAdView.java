@@ -15,6 +15,7 @@ import com.applovin.adview.AppLovinAdViewEventListener;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxAdViewAdListener;
 import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.sdk.AppLovinAd;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.platform.PlatformView;
 
-public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdListener {
+public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdViewAdListener {
     final static String TAG = "FLUTTER APPLOVIN : - ";
     final int viewId;
     final MaxAdView bannerView;
@@ -83,47 +84,46 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     @Override
     public void dispose() {
         bannerView.destroy();
-        instance.callback(adUnitId,"dispose",null);
-        
+    }
+
+    @Override
+    public void onAdExpanded(MaxAd ad) {
+        Log.d(TAG, "onAdExpanded: APPLOVINMAXISTNER");
+    }
+
+    @Override
+    public void onAdCollapsed(MaxAd ad) {
+        Log.d(TAG, "onAdCollapsed: APPLOVINMAXISTNER");
+
     }
 
     @Override
     public void onAdLoaded(MaxAd ad) {
-        instance.callback(ad.getAdUnitId(),"onAdLoaded",null);
-        Log.d(TAG, "onAdLoaded: APPLOVINMAXLISTNER");
+        Log.d(TAG, "onAdLoaded: APPLOVINMAXISTNER");
     }
 
     @Override
     public void onAdDisplayed(MaxAd ad) {
-        //don't use
+
     }
 
     @Override
     public void onAdHidden(MaxAd ad) {
-        //don't use
+        Log.d(TAG, "onAdHidden: APPLOVINMAXISTNER");
     }
 
     @Override
     public void onAdClicked(MaxAd ad) {
-        instance.callback(ad.getAdUnitId(),"onAdClicked",null);
-        Log.d(TAG, "onAdClicked: APPLOVINMAXLISTNER");
+        Log.d(TAG, "onAdClicked: APPLOVINMAXISTNER");
     }
 
     @Override
     public void onAdLoadFailed(String adUnitId, MaxError error) {
-        final HashMap other = new HashMap<String,String>();
-        other.put("code",error.getCode());
-        other.put("message",error.getMessage());
-        instance.callback(adUnitId,"onAdLoadFailed", other);
-        Log.d(TAG, "onAdLoadFailed: APPLOVINMAXLISTNER");
+        Log.d(TAG, "onAdLoadFailed: APPLOVINMAXISTNER");
     }
 
     @Override
     public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-        final HashMap other = new HashMap<String,String>();
-        other.put("code",error.getCode());
-        other.put("message",error.getMessage());
-        instance.callback(ad.getAdUnitId(),"onAdDisplayFailed",other);
-        Log.d(TAG, "onAdDisplayFailed: APPLOVINMAXLISTNER");
+        Log.d(TAG, "onAdDisplayFailed: APPLOVINMAXISTNER");
     }
 }

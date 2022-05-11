@@ -27,34 +27,42 @@ class ApplovinMaxMediation {
   static void setBannerAdCallbacks({
     required String adUnitId,
     Function? onAdLoaded,
+    Function? onAdDisplayed,
+    Function? onAdHidden,
     Function? onAdClicked,
-    Function(MaxError? error)? onAdLoadFailed,
-    Function(MaxError? error)? onAdDisplayFailed,
-    Function? onDispose,
+    Function? onAdReceived,
+    Function? onAdLeftApplication,
+    Function(MaxError? error)? onAdFailedToReceiveAd,
+    Function(MaxError? error)? onAdFailedToDisplay,
   }) {
-    const MethodChannel bannerChannel =
-        MethodChannel('applovinmax_mediation/banner');
-
     _channel.setMethodCallHandler((MethodCall call) async {
       print("APPLOVINMAXLISTNER" + " setBannerAdCalbacks Called...");
-      print("APPLOVINMAXLISTNER" + call.arguments);
-      print("APPLOVINMAXLISTNER" + call.method);
       if (call.method == adUnitId) {
         switch (call.arguments.get('callback')) {
-          case 'dispose':
-            onDispose?.call();
-            break;
           case 'onAdLoaded':
             onAdLoaded?.call();
+            break;
+          case 'onAdDisplayed':
+            onAdDisplayed?.call();
+            break;
+          case 'onAdHidden':
+            onAdHidden?.call();
             break;
           case 'onAdClicked':
             onAdClicked?.call();
             break;
+          case 'onAdReceived':
+            onAdReceived?.call();
+            break;
+          case 'onAdLeftApplication':
+            onAdLeftApplication?.call();
+            break;
           case 'onAdLoadFailed':
-            onAdLoadFailed?.call(MaxError.fromMap(call.arguments.get('error')));
+            onAdFailedToReceiveAd
+                ?.call(MaxError.fromMap(call.arguments.get('error')));
             break;
           case 'onAdDisplayFailed':
-            onAdDisplayFailed
+            onAdFailedToDisplay
                 ?.call(MaxError.fromMap(call.arguments.get('error')));
             break;
           default:
