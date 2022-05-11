@@ -57,6 +57,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
   private void initApplovinSDK(@NonNull Result result) {
     AppLovinSdk.getInstance(context).setMediationProvider( "max" );
     AppLovinSdk.initializeSdk(context, config -> {
+      //TODO: for testing
       callback("1","callbacks working file",null);
       if ( config.getConsentDialogState() == AppLovinSdkConfiguration.ConsentDialogState.APPLIES )
       {

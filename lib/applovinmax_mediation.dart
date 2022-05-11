@@ -34,6 +34,7 @@ class ApplovinMaxMediation {
   }) {
     _channel.setMethodCallHandler((MethodCall call) async {
       print("APPLOVINMAXLISTNER" + call.arguments);
+      print("APPLOVINMAXLISTNER" + call.arguments);
       print("APPLOVINMAXLISTNER" + call.method);
       if (call.method == adUnitId) {
         switch (call.arguments['callback']) {
