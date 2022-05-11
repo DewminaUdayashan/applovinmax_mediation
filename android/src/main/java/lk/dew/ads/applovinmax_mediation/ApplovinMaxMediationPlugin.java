@@ -74,6 +74,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 // dialog should be shown on the next application initialization
                 result.success("UNKNOWN");
             }
+            callback("1023","CALLBACK TESTING WORKED",null);
         });
     }
 
