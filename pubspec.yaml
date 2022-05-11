@@ -29,7 +29,7 @@ flutter:
     platforms:
       android:
         package: lk.dew.ads.applovinmax_mediation
-        pluginClass: ApplovinmaxMediationPlugin
+        pluginClass: ApplovinMaxMediationPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
