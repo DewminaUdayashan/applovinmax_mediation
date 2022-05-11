@@ -11,34 +11,36 @@ import android.widget.FrameLayout;
 import com.applovin.adview.AppLovinAdView;
 import com.applovin.adview.AppLovinAdViewDisplayErrorCode;
 import com.applovin.adview.AppLovinAdViewEventListener;
+import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
+import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.sdk.AppLovinAd;
 import com.applovin.sdk.AppLovinAdClickListener;
 import com.applovin.sdk.AppLovinAdDisplayListener;
 import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdSize;
-import com.applovin.sdk.AppLovinSdkUtils;
 
 import java.util.HashMap;
 
-import io.flutter.Log;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.platform.PlatformView;
 
-public class BannerAdView extends FlutterActivity implements PlatformView, AppLovinAdClickListener, AppLovinAdDisplayListener,
-        AppLovinAdViewEventListener, AppLovinAdLoadListener {
-    final static String TAG = "FLUTTER APPLOVIN : BANNER - ";
+public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdListener {
+    final static String TAG = "FLUTTER APPLOVIN : - ";
+    final int viewId;
     final MaxAdView bannerView;
     AppLovinAdSize size;
     int height;
     int width;
     String adUnitId;
-    ApplovinMaxMediationPlugin instance;
+    final ApplovinMaxMediationPlugin instance;
 
-
-    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance) {
+    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
+        android.util.Log.d(TAG, "BannerAdView: "+viewId);
         this.instance = instance;
+        this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
         try {
             this.adUnitId = args.get("UnitId").toString();
@@ -80,50 +82,42 @@ public class BannerAdView extends FlutterActivity implements PlatformView, AppLo
     @Override
     public void dispose() {
         bannerView.destroy();
+        instance.callback(adUnitId,"dispose",null);
     }
 
     @Override
-    public void adReceived(AppLovinAd ad) {
-
+    public void onAdLoaded(MaxAd ad) {
+        instance.callback(ad.getAdUnitId(),"onAdLoaded",null);
     }
 
     @Override
-    public void failedToReceiveAd(int errorCode) {
-        Log.e(TAG, "Failed to receive Ad with code : " + errorCode);
+    public void onAdDisplayed(MaxAd ad) {
+        //don't use
     }
 
     @Override
-    public void adOpenedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
-
+    public void onAdHidden(MaxAd ad) {
+        //don't use
     }
 
     @Override
-    public void adClosedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
-
+    public void onAdClicked(MaxAd ad) {
+        instance.callback(ad.getAdUnitId(),"onAdClicked",null);
     }
 
     @Override
-    public void adLeftApplication(AppLovinAd ad, AppLovinAdView adView) {
-
+    public void onAdLoadFailed(String adUnitId, MaxError error) {
+        final HashMap other = new HashMap<String,String>();
+        other.put("code",error.getCode());
+        other.put("message",error.getMessage());
+        instance.callback(adUnitId,"onAdLoadFailed", other);
     }
 
     @Override
-    public void adFailedToDisplay(AppLovinAd ad, AppLovinAdView adView, AppLovinAdViewDisplayErrorCode code) {
-
-    }
-
-    @Override
-    public void adClicked(AppLovinAd ad) {
-
-    }
-
-    @Override
-    public void adDisplayed(AppLovinAd ad) {
-
-    }
-
-    @Override
-    public void adHidden(AppLovinAd ad) {
-
+    public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+        final HashMap other = new HashMap<String,String>();
+        other.put("code",error.getCode());
+        other.put("message",error.getMessage());
+        instance.callback(ad.getAdUnitId(),"onAdDisplayFailed",other);
     }
 }
