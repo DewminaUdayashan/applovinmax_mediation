@@ -3,6 +3,7 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.applovin.adview.AppLovinAdViewEventListener;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxAdViewAdListener;
 import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.sdk.AppLovinAd;
@@ -27,7 +29,8 @@ import java.util.HashMap;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.platform.PlatformView;
 
-public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdListener {
+public class BannerAdView extends FlutterActivity implements PlatformView, MaxAdViewAdListener,AppLovinAdClickListener, AppLovinAdDisplayListener,
+        AppLovinAdViewEventListener, AppLovinAdLoadListener {
     final static String TAG = "FLUTTER APPLOVIN : - ";
     final int viewId;
     final MaxAdView bannerView;
@@ -82,42 +85,103 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     @Override
     public void dispose() {
         bannerView.destroy();
-        instance.callback(adUnitId,"dispose",null);
+    }
+
+    @Override
+    public void onAdExpanded(MaxAd ad) {
+        Log.d(TAG, "onAdExpanded: APPLOVINMAXISTNER");
+    }
+
+    @Override
+    public void onAdCollapsed(MaxAd ad) {
+        Log.d(TAG, "onAdCollapsed: APPLOVINMAXISTNER");
+
     }
 
     @Override
     public void onAdLoaded(MaxAd ad) {
+        Log.d(TAG, "onAdLoaded: APPLOVINMAXISTNER");
         instance.callback(ad.getAdUnitId(),"onAdLoaded",null);
     }
 
     @Override
     public void onAdDisplayed(MaxAd ad) {
-        //don't use
+        Log.d(TAG, "onAdDisplayed: APPLOVINMAXISTNER");
+        instance.callback(ad.getAdUnitId(),"onAdDisplayed",null);
     }
 
     @Override
     public void onAdHidden(MaxAd ad) {
-        //don't use
+        Log.d(TAG, "onAdHidden: APPLOVINMAXISTNER");
+        instance.callback(ad.getAdUnitId(),"onAdHidden",null);
     }
 
     @Override
     public void onAdClicked(MaxAd ad) {
+        Log.d(TAG, "onAdClicked: APPLOVINMAXISTNER");
         instance.callback(ad.getAdUnitId(),"onAdClicked",null);
     }
 
     @Override
     public void onAdLoadFailed(String adUnitId, MaxError error) {
-        final HashMap other = new HashMap<String,String>();
-        other.put("code",error.getCode());
-        other.put("message",error.getMessage());
-        instance.callback(adUnitId,"onAdLoadFailed", other);
+        Log.d(TAG, "onAdLoadFailed: APPLOVINMAXISTNER");
+        HashMap err = new HashMap<String,String>();
+        err.put("code",error.getCode());
+        err.put("message",error.getMessage());
+        instance.callback(adUnitId,"onAdLoadFailed",err);
     }
 
     @Override
     public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-        final HashMap other = new HashMap<String,String>();
-        other.put("code",error.getCode());
-        other.put("message",error.getMessage());
-        instance.callback(ad.getAdUnitId(),"onAdDisplayFailed",other);
+        Log.d(TAG, "onAdDisplayFailed: APPLOVINMAXISTNER");
+        HashMap err = new HashMap<String,String>();
+        err.put("code",error.getCode());
+        err.put("message",error.getMessage());
+        instance.callback(adUnitId,"onAdLoadFailed",err);
+    }
+
+    @Override
+    public void adOpenedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
+        
+    }
+
+    @Override
+    public void adClosedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
+
+    }
+
+    @Override
+    public void adLeftApplication(AppLovinAd ad, AppLovinAdView adView) {
+
+    }
+
+    @Override
+    public void adFailedToDisplay(AppLovinAd ad, AppLovinAdView adView, AppLovinAdViewDisplayErrorCode code) {
+        Log.d(TAG, "adFailedToDisplay: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adClicked(AppLovinAd ad) {
+        Log.d(TAG, "adClicked: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adDisplayed(AppLovinAd ad) {
+        Log.d(TAG, "adDisplayed: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adHidden(AppLovinAd ad) {
+        Log.d(TAG, "adHidden: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void adReceived(AppLovinAd ad) {
+        Log.d(TAG, "adReceived: APPLOVINMAXISTNER 2");
+    }
+
+    @Override
+    public void failedToReceiveAd(int errorCode) {
+        Log.d(TAG, "failedToReceiveAd: APPLOVINMAXISTNER 2"); //
     }
 }

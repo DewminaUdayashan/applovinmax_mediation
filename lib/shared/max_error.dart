@@ -1,15 +1,15 @@
 class MaxError {
-  MaxError(
-    this.code,
-    this.message,
-  );
+  MaxError({
+    required this.code,
+    this.message = "",
+  });
   final String code;
   final String message;
 
   factory MaxError.fromMap(Map<String, dynamic> map) {
     return MaxError(
-      map['code'] as String,
-      map['message'] as String,
+      code: map['code'] as String,
+      message: map['message'] as String,
     );
   }
 
