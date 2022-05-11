@@ -2,6 +2,8 @@ import 'package:applovinmax_mediation/shared/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+typedef ApplovinAdListener = void Function();
+
 class ApplovinMaxBanner extends StatelessWidget {
   final Map<BannerAdSize, String> sizes = {
     BannerAdSize.banner: 'BANNER',

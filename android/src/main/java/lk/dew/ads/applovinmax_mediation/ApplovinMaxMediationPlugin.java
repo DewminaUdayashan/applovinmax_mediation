@@ -5,8 +5,11 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
+
+import java.util.HashMap;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -23,17 +26,17 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
   public  Context context;
   private MethodChannel channel;
   public Activity activity;
+  public FlutterPluginBinding bindingInstance;
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     context = flutterPluginBinding.getApplicationContext();
-
-    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation");
+    bindingInstance = flutterPluginBinding;
+    channel = new MethodChannel(bindingInstance.getBinaryMessenger(), "applovinmax_mediation");
     channel.setMethodCallHandler(this);
     if (instance == null) {
       instance = new ApplovinMaxMediationPlugin();
     }
-    registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
   }
 
   @Override
@@ -74,11 +77,18 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
   }
 
 
+  public void callback(String adUnitId,String callback, HashMap<String,String> error){
+    final HashMap data  = new HashMap<String,String>();
+    data.put("callback",callback);
+    if(error!=null){
+      data.put("error",error);
+    }
+    channel.invokeMethod(adUnitId,data);
+  }
+
   public void registerBannerFactory(PlatformViewRegistry registry) {
     registry.registerViewFactory("/Banner", new BannerFactory(instance));
   }
-
-
 
 
   @Override
@@ -89,6 +99,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     activity = binding.getActivity();
+    if(bindingInstance!=null)
+    registerBannerFactory(bindingInstance.getPlatformViewRegistry());
   }
 
   @Override

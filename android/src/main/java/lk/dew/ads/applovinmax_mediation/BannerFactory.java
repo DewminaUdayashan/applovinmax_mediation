@@ -18,6 +18,6 @@ ApplovinMaxMediationPlugin instance;
 
     @Override
     public PlatformView create(Context context, int viewId, Object args) {
-        return new BannerAdView(context, (HashMap) args,instance);
+        return new BannerAdView(context, (HashMap) args,instance, viewId);
     }
 }

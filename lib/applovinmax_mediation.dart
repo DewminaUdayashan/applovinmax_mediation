@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:applovinmax_mediation/shared/enums.dart';
+import 'package:applovinmax_mediation/shared/max_error.dart';
 import 'package:flutter/services.dart';
 
 class ApplovinMaxMediation {
@@ -22,4 +23,50 @@ class ApplovinMaxMediation {
         return ConsentDialogState.unknown;
     }
   }
+
+  static void setBannerAdCallbacks({
+    required String adUnitId,
+    Function? onAdLoaded,
+    Function? onAdClicked,
+    Function(MaxError? error)? onAdLoadFailed,
+    Function(MaxError? error)? onAdDisplayFailed,
+    Function? onDispose,
+  }) {
+    _channel.setMethodCallHandler((MethodCall call) async {
+      if (call.method == adUnitId) {
+        switch (call.arguments['callback']) {
+          case 'dispose':
+            onDispose?.call();
+            break;
+          case 'onAdLoaded':
+            onAdLoaded?.call();
+            break;
+          case 'onAdClicked':
+            onAdClicked?.call();
+            break;
+          case 'onAdLoadFailed':
+            onAdLoadFailed?.call(MaxError.fromMap(call.arguments['error']));
+            break;
+          case 'onAdDisplayFailed':
+            onAdDisplayFailed?.call(MaxError.fromMap(call.arguments['error']));
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
 }
+
+// typedef AdCallback = void Function({
+//   Function? onAdReceived,
+//   Function? onDailedToReceiveAd,
+//   Function? onAdOpenedFullscreen,
+//   Function? onAdClosedFullscreen,
+//   Function? onAdLeftApplication,
+//   Function? onAdFailedToDisplay,
+//   Function? onAdClicked,
+//   Function? onAdDisplayed,
+//   Function? onAdHidden,
+//   Function? onDispose,
+// });
