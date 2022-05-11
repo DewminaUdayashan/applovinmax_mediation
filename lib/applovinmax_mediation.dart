@@ -35,12 +35,12 @@ class ApplovinMaxMediation {
     const MethodChannel bannerChannel =
         MethodChannel('applovinmax_mediation/banner');
 
-    bannerChannel.setMethodCallHandler((MethodCall call) async {
+    _channel.setMethodCallHandler((MethodCall call) async {
       print("APPLOVINMAXLISTNER" + " setBannerAdCalbacks Called...");
       print("APPLOVINMAXLISTNER" + call.arguments);
       print("APPLOVINMAXLISTNER" + call.method);
       if (call.method == adUnitId) {
-        switch (call.arguments['callback']) {
+        switch (call.arguments.get('callback')) {
           case 'dispose':
             onDispose?.call();
             break;
@@ -51,10 +51,11 @@ class ApplovinMaxMediation {
             onAdClicked?.call();
             break;
           case 'onAdLoadFailed':
-            onAdLoadFailed?.call(MaxError.fromMap(call.arguments['error']));
+            onAdLoadFailed?.call(MaxError.fromMap(call.arguments.get('error')));
             break;
           case 'onAdDisplayFailed':
-            onAdDisplayFailed?.call(MaxError.fromMap(call.arguments['error']));
+            onAdDisplayFailed
+                ?.call(MaxError.fromMap(call.arguments.get('error')));
             break;
           default:
             break;

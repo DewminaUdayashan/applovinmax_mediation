@@ -3,6 +3,7 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,11 +84,13 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     public void dispose() {
         bannerView.destroy();
         instance.callback(adUnitId,"dispose",null);
+        
     }
 
     @Override
     public void onAdLoaded(MaxAd ad) {
         instance.callback(ad.getAdUnitId(),"onAdLoaded",null);
+        Log.d(TAG, "onAdLoaded: APPLOVINMAXLISTNER");
     }
 
     @Override
@@ -103,6 +106,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     @Override
     public void onAdClicked(MaxAd ad) {
         instance.callback(ad.getAdUnitId(),"onAdClicked",null);
+        Log.d(TAG, "onAdClicked: APPLOVINMAXLISTNER");
     }
 
     @Override
@@ -111,6 +115,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
         other.put("code",error.getCode());
         other.put("message",error.getMessage());
         instance.callback(adUnitId,"onAdLoadFailed", other);
+        Log.d(TAG, "onAdLoadFailed: APPLOVINMAXLISTNER");
     }
 
     @Override
@@ -119,5 +124,6 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
         other.put("code",error.getCode());
         other.put("message",error.getMessage());
         instance.callback(ad.getAdUnitId(),"onAdDisplayFailed",other);
+        Log.d(TAG, "onAdDisplayFailed: APPLOVINMAXLISTNER");
     }
 }
