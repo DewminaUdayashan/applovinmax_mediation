@@ -83,7 +83,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         if (error != null) {
             data.put("error", error);
         }
-        channel.invokeMethod(adUnitId, data, new Result() {
+        instance.channel.invokeMethod(adUnitId, data, new Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d(TAG, "success: callback result");
@@ -117,7 +117,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         Log.d(TAG, "onAttachedToActivity: ");
         activity = binding.getActivity();
-        channel.setMethodCallHandler(this);
 //        if (bindingInstance != null)
 //            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
     }
