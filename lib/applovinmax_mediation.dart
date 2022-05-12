@@ -36,10 +36,6 @@ class ApplovinMaxMediation {
     Function(MaxError? error)? onAdFailedToReceiveAd,
     Function(MaxError? error)? onAdFailedToDisplay,
   }) {
-    bannerChannel.setMethodCallHandler((call) async {
-      print("FLUTTER APPLOVIN : - " + call.method.toString());
-      print("FLUTTER APPLOVIN : - " + call.arguments.toString());
-    });
     _channel.setMethodCallHandler((MethodCall call) async {
       print("APPLOVINMAXLISTNER" + " setBannerAdCalbacks Called...");
       print("APPLOVINMAXISTNER " + call.method.toString());
