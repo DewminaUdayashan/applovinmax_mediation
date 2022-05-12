@@ -36,10 +36,11 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
-        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation");
-        channel.setMethodCallHandler(this);
+        this.channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation");
+        this.channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
+        Log.d(TAG, "onAttachedToEngine: is channel null on initially : "+(channel==null));
     }
 
     @Override
@@ -111,13 +112,13 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         Log.d(TAG, "onDetachedFromEngine: ");
-        channel.setMethodCallHandler(null);
+//        channel.setMethodCallHandler(null);
     }
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
-        channel.setMethodCallHandler(this);
+//        channel.setMethodCallHandler(this);
 //        if (bindingInstance != null)
 //            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
     }
