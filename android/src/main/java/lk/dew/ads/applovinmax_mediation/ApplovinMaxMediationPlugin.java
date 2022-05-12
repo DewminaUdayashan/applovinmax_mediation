@@ -87,23 +87,28 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 //        if (error != null) {
 //            data.put("error", error);
 //        }
-
-        instance.activity.runOnUiThread(() -> instance.channel.invokeMethod(adUnitId, "data", new Result() {
+        activity.runOnUiThread(new Runnable() {
             @Override
-            public void success(@Nullable Object result) {
-                Log.d(TAG, "success: callback result");
-            }
+            public void run() {
+                instance.activity.runOnUiThread(() -> instance.channel.invokeMethod(adUnitId, "data", new Result() {
+                    @Override
+                    public void success(@Nullable Object result) {
+                        Log.d(TAG, "success: callback result");
+                    }
 
-            @Override
-            public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                Log.d(TAG, "error: callback result");
-            }
+                    @Override
+                    public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+                        Log.d(TAG, "error: callback result");
+                    }
 
-            @Override
-            public void notImplemented() {
-                Log.d(TAG, "notImplemented: callback result");
+                    @Override
+                    public void notImplemented() {
+                        Log.d(TAG, "notImplemented: callback result");
+                    }
+                }));
             }
-        }));
+        });
+
 //        if (channel != null)
 //            new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
 //                @Override
