@@ -37,11 +37,11 @@ class ApplovinMaxMediation {
     Function(MaxError? error)? onAdDisplayFailed,
   }) {
     _channel.setMethodCallHandler((MethodCall call) async {
-      print(
-          "FLUTTER APPLOVIN DART SIDE : method : - " + call.method.toString());
-      print(
-          "FLUTTER APPLOVIN DART SIDE : args : - " + call.arguments.toString());
-      print("FLUTTER APPLOVIN DART SIDE : ad unit id : - " + adUnitId);
+      print("FLUTTER APPLOVIN : - DART SIDE - " + call.method.toString());
+      print("FLUTTER APPLOVIN : - DART SIDE - " + call.arguments.toString());
+      print("FLUTTER APPLOVIN : - DART SIDE ad unit id : - " + adUnitId);
+      print("FLUTTER APPLOVIN : - DART SIDE ad unit id equals ? : - " +
+          (adUnitId == call.method).toString());
       //
       if (call.method == adUnitId) {
         switch (call.arguments.get('callback')) {
