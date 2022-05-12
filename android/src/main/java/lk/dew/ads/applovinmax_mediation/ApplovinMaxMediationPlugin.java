@@ -2,8 +2,6 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -34,6 +32,10 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public MethodChannel channel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
+
+   public ApplovinMaxMediationPlugin(){
+       Log.d(TAG, "ApplovinMaxMediationPlugin: ================ Applovin Mediation Plugin Initialized ================");
+   }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
