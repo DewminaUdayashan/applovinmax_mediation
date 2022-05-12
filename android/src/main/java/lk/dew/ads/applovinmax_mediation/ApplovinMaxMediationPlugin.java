@@ -77,39 +77,34 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
         Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
-                " error is null : " + (error == null) + ", is channel null ? :- " + (instance.channel == null));
+                " error is null : " + (error == null)+", is channel null ? :- "+(channel==null));
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {
             data.put("error", error);
         }
-        if(instance!=null)
-        if(instance.channel!=null && instance.activity!=null){
-            instance.activity.runOnUiThread(() -> instance.channel.invokeMethod(adUnitId, data, new Result() {
-                @Override
-                public void success(@Nullable Object result) {
-                    Log.d(TAG, "success: callback result");
-                }
+        channel.invokeMethod(adUnitId, data, new Result() {
+            @Override
+            public void success(@Nullable Object result) {
+                Log.d(TAG, "success: callback result");
+            }
 
-                @Override
-                public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                    Log.d(TAG, "error: callback result");
-                }
+            @Override
+            public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+                Log.d(TAG, "error: callback result");
+            }
 
-                @Override
-                public void notImplemented() {
-                    Log.d(TAG, "notImplemented: callback result");
-                }
-            }));
-        }else{
-            Log.d(TAG, "callback: channel is null ? "+(instance.channel==null)+", activity is null ? "+(instance.activity==null));
-        }else Log.d(TAG, "callback: INSTANCE IS NULL ? "+ (instance==null));
-
+            @Override
+            public void notImplemented() {
+                Log.d(TAG, "notImplemented: callback result");
+            }
+        });
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
         Log.d(TAG, "registerBannerFactory: instance is null when registerBannerFactoryCalled ? :- " + (instance == null));
         registry.registerViewFactory("/Banner", new BannerFactory(instance));
+        callback("0001","testing gasa",null);
     }
 
 
@@ -121,26 +116,24 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
-        Log.d(TAG, "onAttachedToActivity: ");
         activity = binding.getActivity();
+        channel.setMethodCallHandler(this);
 //        if (bindingInstance != null)
 //            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
     }
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
-        Log.d(TAG, "onDetachedFromActivityForConfigChanges: ");
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-        Log.d(TAG, "onReattachedToActivityForConfigChanges: ");
         activity = binding.getActivity();
-        channel.setMethodCallHandler(this);
+
     }
 
     @Override
     public void onDetachedFromActivity() {
-        Log.d(TAG, "onDetachedFromActivity: ");
+
     }
 }
