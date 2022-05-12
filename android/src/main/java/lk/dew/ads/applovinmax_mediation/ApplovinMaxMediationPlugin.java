@@ -43,7 +43,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         this.channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
-        Log.d(TAG, "onAttachedToEngine: is channel null on initially : "+(channel==null));
+        Log.d(TAG, "onAttachedToEngine: is channel null on initially : " + (channel == null));
     }
 
     @Override
@@ -81,37 +81,37 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error, ApplovinMaxMediationPlugin ins) {
         Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
-                " error is null : " + (error == null)+", is channel null ? :- "+(ins.channel==null));
+                " error is null : " + (error == null) + ", is channel null ? :- " + (channel == null));
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {
             data.put("error", error);
         }
-        if (channel!=null)
-        new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
-            @Override
-            public void success(@Nullable Object result) {
-                Log.d(TAG, "success: callback result");
-            }
+        if (channel != null)
+            new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
+                @Override
+                public void success(@Nullable Object result) {
+                    Log.d(TAG, "success: callback result");
+                }
 
-            @Override
-            public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                Log.d(TAG, "error: callback result");
-            }
+                @Override
+                public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+                    Log.d(TAG, "error: callback result");
+                }
 
-            @Override
-            public void notImplemented() {
-                Log.d(TAG, "notImplemented: callback result");
-            }
-        }));
-
+                @Override
+                public void notImplemented() {
+                    Log.d(TAG, "notImplemented: callback result");
+                }
+            }));
+        else Log.d(TAG, "callback: CHANNEL WAS NULL WHEN TRYING TO INVOKE METHOD");
 
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
         Log.d(TAG, "registerBannerFactory: - channel is null when registerBannerFactoryCalled ? :- " + (channel == null));
         registry.registerViewFactory("/Banner", new BannerFactory(instance));
-        callback("0001","testing gasa",null,instance);
+        callback("0001", "testing gasa", null, instance);
     }
 
 
