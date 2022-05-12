@@ -40,11 +40,9 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     int width;
     String adUnitId;
     final ApplovinMaxMediationPlugin instance;
-    final MethodChannel bannerChannel;
 
     public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
         android.util.Log.d(TAG, "BannerAdView: "+viewId);
-        this.bannerChannel = new MethodChannel(instance.bindingInstance.getBinaryMessenger(),"banner");
         this.instance = instance;
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -71,7 +69,6 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
         this.bannerView.loadAd();
         Log.d(TAG, "BannerAdView: SETTING UP TEST CALLBACK");
         instance.callback("02242","Banner load called",null);
-        bannerChannel.invokeMethod("test","THIS IS TEST");
     }
 
     public boolean isTablet(Context context) {

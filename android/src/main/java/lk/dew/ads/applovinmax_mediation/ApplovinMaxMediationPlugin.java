@@ -80,12 +80,12 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
         final String TAG = "APPLOVINMAXLISTNER";
+        Log.d(TAG, "callback: CALBACK METHOD CALLED : instance = "+ String.valueOf(instance!=null) );
         final HashMap data = new HashMap();
         data.put("callback", callback);
         if (error != null) {
             data.put("error", error);
         }
-        if (channel != null)
             activity.runOnUiThread(() -> channel.invokeMethod(adUnitId, data, new Result() {
                 @Override
                 public void success(@Nullable Object result) {
