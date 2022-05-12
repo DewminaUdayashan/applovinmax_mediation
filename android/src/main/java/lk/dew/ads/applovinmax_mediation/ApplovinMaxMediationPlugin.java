@@ -2,6 +2,8 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -84,7 +86,9 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         if (error != null) {
             data.put("error", error);
         }
-        ins.channel.invokeMethod(adUnitId, data, new Result() {
+
+
+        new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d(TAG, "success: callback result");
@@ -99,7 +103,9 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
             public void notImplemented() {
                 Log.d(TAG, "notImplemented: callback result");
             }
-        });
+        }));
+
+
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
