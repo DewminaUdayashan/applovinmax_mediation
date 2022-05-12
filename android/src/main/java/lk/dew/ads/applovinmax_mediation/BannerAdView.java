@@ -32,26 +32,26 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     String adUnitId;
     final ApplovinMaxMediationPlugin instance;
 
-    public BannerAdView(Context context, HashMap<String,String> args, ApplovinMaxMediationPlugin instance, int viewId) {
+    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
         this.instance = instance;
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
         try {
-            this.adUnitId = args.get("UnitId");
+            this.adUnitId = args.get("UnitId").toString();
         } catch (Exception e) {
             this.adUnitId = "UNIT_ID";
         }
 
         this.bannerView = new MaxAdView(adUnitId, context);
         try {
-            if (Objects.requireNonNull(args.get("size")).equals("ADAPTIVE")) {
+            if (args.get("size").equals("ADAPTIVE")) {
                 Log.d("APPLOVINMAX FLUTTER", "BannerAdView: ADAPTIVE BANNER CALLED");
                 height = MaxAdFormat.BANNER.getAdaptiveSize(instance.activity).getHeight();
                 bannerView.setExtraParameter("adaptive_banner", "true");
             } else {
                 this.height = getResources().getDimensionPixelSize(isTablet(context) ? 90 : 50);
             }
-            this.size = AppLovinAdSize.fromString(args.get("size"));
+            this.size = AppLovinAdSize.fromString(args.get("size").toString());
         } catch (Exception e) {
             this.size = AppLovinAdSize.BANNER;
         }
