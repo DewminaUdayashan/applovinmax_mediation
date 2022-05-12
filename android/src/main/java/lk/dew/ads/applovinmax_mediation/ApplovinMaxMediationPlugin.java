@@ -103,7 +103,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
-        Log.d(TAG, "registerBannerFactory: - channel is null when registerBannerFactoryCalled ?  :- " + (channel == null));
+        Log.d(TAG, "registerBannerFactory: - channel is null when registerBannerFactoryCalled ? :- " + (channel == null));
         registry.registerViewFactory("/Banner", new BannerFactory(instance));
         callback("0001","testing gasa",null,instance);
     }
