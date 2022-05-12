@@ -78,8 +78,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
-        Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : "+(adUnitId==null)+ " callback : "+(callback==null)+"" +
-                " error : "+(error==null));
+        Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : "+(adUnitId)+ ", callback : "+(callback)+"," +
+                " error is null : "+(error==null));
         final HashMap<String,Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {
