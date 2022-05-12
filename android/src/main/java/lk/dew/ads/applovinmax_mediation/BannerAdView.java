@@ -42,7 +42,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     final ApplovinMaxMediationPlugin instance;
 
     public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
-        android.util.Log.d(TAG, "BannerAdView: "+viewId);
+        android.util.Log.d(TAG, "BannerAdView: " + viewId);
         this.instance = instance;
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -54,19 +54,60 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
 
         this.bannerView = new MaxAdView(adUnitId, context);
         try {
-            if(args.get("size")=="ADAPTIVE"){
-                height= MaxAdFormat.BANNER.getAdaptiveSize(instance.activity).getHeight();
-                bannerView.setExtraParameter( "adaptive_banner", "true" );
-            }else{
-                this.height = getResources().getDimensionPixelSize(isTablet(context)?90:50);
+            if (args.get("size") == "ADAPTIVE") {
+                height = MaxAdFormat.BANNER.getAdaptiveSize(instance.activity).getHeight();
+                bannerView.setExtraParameter("adaptive_banner", "true");
+            } else {
+                this.height = getResources().getDimensionPixelSize(isTablet(context) ? 90 : 50);
             }
             this.size = AppLovinAdSize.fromString(args.get("size").toString());
         } catch (Exception e) {
             this.size = AppLovinAdSize.BANNER;
         }
-        bannerView.setLayoutParams( new FrameLayout.LayoutParams(size.getWidth(),size.getWidth()));
+        bannerView.setLayoutParams(new FrameLayout.LayoutParams(size.getWidth(), size.getWidth()));
         bannerView.setGravity(Gravity.CENTER);
         this.bannerView.loadAd();
+        bannerView.setListener(new MaxAdViewAdListener() {
+            @Override
+            public void onAdExpanded(MaxAd ad) {
+                
+            }
+
+            @Override
+            public void onAdCollapsed(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdLoaded(MaxAd ad) {
+                Log.d(TAG, "onAdLoaded: ");
+            }
+
+            @Override
+            public void onAdDisplayed(MaxAd ad) {
+                Log.d(TAG, "onAdDisplayed: ");
+            }
+
+            @Override
+            public void onAdHidden(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdClicked(MaxAd ad) {
+                Log.d(TAG, "onAdClicked: ");
+            }
+
+            @Override
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+
+            }
+
+            @Override
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+            }
+        });
     }
 
     public boolean isTablet(Context context) {
@@ -96,49 +137,48 @@ public class BannerAdView extends FlutterActivity implements PlatformView, MaxAd
     @Override
     public void onAdCollapsed(MaxAd ad) {
         Log.d(TAG, "onAdCollapsed: APPLOVINMAXISTNER");
-
     }
 
     @Override
     public void onAdLoaded(MaxAd ad) {
         Log.d(TAG, "onAdLoaded: APPLOVINMAXISTNER");
-        instance.callback(ad.getAdUnitId(),"onAdLoaded",null);
+//        instance.callback(ad.getAdUnitId(),"onAdLoaded",null);
     }
 
     @Override
     public void onAdDisplayed(MaxAd ad) {
         Log.d(TAG, "onAdDisplayed: APPLOVINMAXISTNER");
-        instance.callback(ad.getAdUnitId(),"onAdDisplayed",null);
+//        instance.callback(ad.getAdUnitId(),"onAdDisplayed",null);
     }
 
     @Override
     public void onAdHidden(MaxAd ad) {
         Log.d(TAG, "onAdHidden: APPLOVINMAXISTNER");
-        instance.callback(ad.getAdUnitId(),"onAdHidden",null);
+        instance.callback(ad.getAdUnitId(), "onAdHidden", null);
     }
 
     @Override
     public void onAdClicked(MaxAd ad) {
         Log.d(TAG, "onAdClicked: APPLOVINMAXISTNER");
-        instance.callback(ad.getAdUnitId(),"onAdClicked",null);
+        instance.callback(ad.getAdUnitId(), "onAdClicked", null);
     }
 
     @Override
     public void onAdLoadFailed(String adUnitId, MaxError error) {
         Log.d(TAG, "onAdLoadFailed: APPLOVINMAXISTNER");
-        HashMap err = new HashMap<String,String>();
-        err.put("code",error.getCode());
-        err.put("message",error.getMessage());
-        instance.callback(adUnitId,"onAdLoadFailed",err);
+        HashMap err = new HashMap<String, String>();
+        err.put("code", error.getCode());
+        err.put("message", error.getMessage());
+        instance.callback(adUnitId, "onAdLoadFailed", err);
     }
 
     @Override
     public void onAdDisplayFailed(MaxAd ad, MaxError error) {
         Log.d(TAG, "onAdDisplayFailed: APPLOVINMAXISTNER");
-        HashMap err = new HashMap<String,String>();
-        err.put("code",error.getCode());
-        err.put("message",error.getMessage());
-        instance.callback(adUnitId,"onAdLoadFailed",err);
+        HashMap err = new HashMap<String, String>();
+        err.put("code", error.getCode());
+        err.put("message", error.getMessage());
+        instance.callback(adUnitId, "onAdLoadFailed", err);
     }
 
 //    @Override
