@@ -21,6 +21,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.StandardMethodCodec;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 
 /**
@@ -38,7 +39,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
-        this.channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation");
+        this.channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
         this.channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -86,8 +87,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         if (error != null) {
             data.put("error", error);
         }
-
-
+        if (channel!=null)
         new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
             @Override
             public void success(@Nullable Object result) {
