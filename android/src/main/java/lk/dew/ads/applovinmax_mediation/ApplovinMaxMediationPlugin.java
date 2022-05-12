@@ -84,9 +84,9 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 " error is null : " + (error == null) + ", is channel null ? :- " + (instance.channel == null));
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
-        if (error != null) {
-            data.put("error", error);
-        }
+//        if (error != null) {
+//            data.put("error", error);
+//        }
 
         instance.activity.runOnUiThread(() -> instance.channel.invokeMethod(adUnitId, data, new Result() {
             @Override
