@@ -83,6 +83,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         if (error != null) {
             data.put("error", error);
         }
+        if(instance!=null)
         if(instance.channel!=null && instance.activity!=null){
             instance.activity.runOnUiThread(() -> instance.channel.invokeMethod(adUnitId, data, new Result() {
                 @Override
@@ -102,7 +103,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
             }));
         }else{
             Log.d(TAG, "callback: channel is null ? "+(instance.channel==null)+", activity is null ? "+(instance.activity==null));
-        }
+        }else Log.d(TAG, "callback: INSTANCE IS NULL ? "+ (instance==null));
 
     }
 
