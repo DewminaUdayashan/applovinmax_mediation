@@ -124,6 +124,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
+        Log.d(TAG, "onAttachedToActivity: ======================================================");
 //        channel.setMethodCallHandler(this);
 //        if (bindingInstance != null)
 //            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
@@ -131,16 +132,18 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
+        Log.d(TAG, "onDetachedFromActivityForConfigChanges: ============================================");
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+        Log.d(TAG, "onReattachedToActivityForConfigChanges: ============================================");
         activity = binding.getActivity();
 
     }
 
     @Override
     public void onDetachedFromActivity() {
-
+        Log.d(TAG, "onDetachedFromActivity: ========================================================");
     }
 }
