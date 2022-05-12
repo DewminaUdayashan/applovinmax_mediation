@@ -38,7 +38,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
         try {
-            this.adUnitId = args.get("UnitId").toString();
+            this.adUnitId = args.get("adUnitId").toString();
         } catch (Exception e) {
             this.adUnitId = "UNIT_ID";
         }
