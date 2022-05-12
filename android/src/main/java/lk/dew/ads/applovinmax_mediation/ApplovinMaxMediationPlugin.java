@@ -71,11 +71,15 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 result.success("UNKNOWN");
             }
             callback("1023", "CALLBACK TESTING WORKED", null);
+            callback("1023", "CALLBACK TESTING WORKED 2", null);
+
         });
     }
 
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
+        Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : "+(adUnitId==null)+ " callback : "+(callback==null)+"" +
+                " error : "+(error==null));
         final HashMap<String,Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {

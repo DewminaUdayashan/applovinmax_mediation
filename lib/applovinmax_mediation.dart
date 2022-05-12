@@ -37,8 +37,8 @@ class ApplovinMaxMediation {
     Function(MaxError? error)? onAdDisplayFailed,
   }) {
     _channel.setMethodCallHandler((MethodCall call) async {
-      print("APPLOVINMAXISTNER " + call.method.toString());
-      print("APPLOVINMAXISTNER " + call.arguments.toString());
+      print("FLUTTER APPLOVIN : - " + call.method.toString());
+      print("FLUTTER APPLOVIN : - " + call.arguments.toString());
       //
       if (call.method == adUnitId) {
         switch (call.arguments.get('callback')) {
