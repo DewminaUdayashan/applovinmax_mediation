@@ -75,15 +75,15 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     }
 
 
-    public void callback(String adUnitId, String callback, HashMap<String, String> error) {
+    public void callback(String adUnitId, String callback, HashMap<String, String> error, ApplovinMaxMediationPlugin ins) {
         Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
-                " error is null : " + (error == null)+", is channel null ? :- "+(channel==null));
+                " error is null : " + (error == null)+", is channel null ? :- "+(ins.channel==null));
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {
             data.put("error", error);
         }
-        channel.invokeMethod(adUnitId, data, new Result() {
+        ins.channel.invokeMethod(adUnitId, data, new Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d(TAG, "success: callback result");
@@ -102,9 +102,9 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
-        Log.d(TAG, "registerBannerFactory: instance is null when registerBannerFactoryCalled ? :- " + (instance == null));
+        Log.d(TAG, "registerBannerFactory: channel is null when registerBannerFactoryCalled ? :- " + (channel == null));
         registry.registerViewFactory("/Banner", new BannerFactory(instance));
-        callback("0001","testing gasa",null);
+        callback("0001","testing gasa",null,instance);
     }
 
 

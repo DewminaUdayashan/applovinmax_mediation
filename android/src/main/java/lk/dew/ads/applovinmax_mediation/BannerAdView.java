@@ -62,37 +62,37 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         bannerView.setListener(new MaxAdViewAdListener() {
             @Override
             public void onAdExpanded(MaxAd ad) {
-                instance.callback(adUnitId, "onAdExpanded", null);
+                instance.callback(adUnitId, "onAdExpanded", null, instance);
                 Log.d(TAG, "onAdExpanded: ");
             }
 
             @Override
             public void onAdCollapsed(MaxAd ad) {
-                instance.callback(adUnitId, "onAdCollapsed", null);
+                instance.callback(adUnitId, "onAdCollapsed", null,instance);
                 Log.d(TAG, "onAdCollapsed: ");
             }
 
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.d(TAG, "onAdLoaded: ");
-                instance.callback(adUnitId, "onAdLoaded", null);
+                instance.callback(adUnitId, "onAdLoaded", null,instance);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.d(TAG, "onAdDisplayed: instance state " + (instance == null));
-                instance.callback(adUnitId, "onAdDisplayed", null);
+                instance.callback(adUnitId, "onAdDisplayed", null,instance);
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
-                instance.callback(adUnitId, "onAdHidden", null);
+                instance.callback(adUnitId, "onAdHidden", null,instance);
                 Log.d(TAG, "onAdHidden: ");
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                instance.callback(adUnitId, "onAdClicked", null);
+                instance.callback(adUnitId, "onAdClicked", null,instance);
                 Log.d(TAG, "onAdClicked: ");
             }
 
@@ -102,7 +102,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
                 err.put("message", error.getMessage());
-                instance.callback(adUnitId, "onAdLoadFailed", err);
+                instance.callback(adUnitId, "onAdLoadFailed", err,instance);
             }
 
             @Override
@@ -111,7 +111,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
                 err.put("message", error.getMessage());
-                instance.callback(adUnitId, "onAdDisplayFailed", err);
+                instance.callback(adUnitId, "onAdDisplayFailed", err,instance);
             }
         });
     }
@@ -130,7 +130,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     @Override
     public void dispose() {
         bannerView.destroy();
-        instance.callback(adUnitId, "onAdViewDisposed", null);
+        instance.callback(adUnitId, "onAdViewDisposed", null,instance);
     }
 
 }
