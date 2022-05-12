@@ -34,9 +34,11 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     int width;
     String adUnitId;
     final ApplovinMaxMediationPlugin instance;
+    MethodChannel channel;
 
-    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
+    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId, MethodChannel channel) {
         Log.d(TAG, "BannerAdView: The instance came from the params is null ? :- " + (instance == null));
+        this.channel = channel;
         this.instance = instance;
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -145,25 +147,20 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         if (error != null) {
             data.put("error", error);
 //        }
-            ins.activity.runOnUiThread(new Runnable() {
+            channel.invokeMethod(adUnitId, "data", new MethodChannel.Result() {
                 @Override
-                public void run() {
-                    ins.activity.runOnUiThread(() -> ins.channel.invokeMethod(adUnitId, "data", new MethodChannel.Result() {
-                        @Override
-                        public void success(@Nullable Object result) {
-                            Log.d(TAG, "success: callback result");
-                        }
+                public void success(@Nullable Object result) {
+                    Log.d(TAG, "success: callback result");
+                }
 
-                        @Override
-                        public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                            Log.d(TAG, "error: callback result");
-                        }
+                @Override
+                public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+                    Log.d(TAG, "error: callback result");
+                }
 
-                        @Override
-                        public void notImplemented() {
-                            Log.d(TAG, "notImplemented: callback result");
-                        }
-                    }));
+                @Override
+                public void notImplemented() {
+                    Log.d(TAG, "notImplemented: callback result");
                 }
             });
         }
