@@ -87,7 +87,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         if (error != null) {
             data.put("error", error);
         }
-        if (channel != null)
+//        if (channel != null)
             new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
                 @Override
                 public void success(@Nullable Object result) {
@@ -104,14 +104,14 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                     Log.d(TAG, "notImplemented: callback result");
                 }
             }));
-        else Log.d(TAG, "callback: CHANNEL WAS NULL WHEN TRYING TO INVOKE METHOD");
+//        else Log.d(TAG, "callback: CHANNEL WAS NULL WHEN TRYING TO INVOKE METHOD");
 
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
         Log.d(TAG, "registerBannerFactory: - channel is null when registerBannerFactoryCalled ? :- " + (channel == null));
         registry.registerViewFactory("/Banner", new BannerFactory(instance));
-        callback("0001", "testing gasa", null, instance);
+//        callback("0001", "testing gasa", null, instance);
     }
 
 
@@ -125,7 +125,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
         Log.d(TAG, "onAttachedToActivity: ======================================================");
-//        channel.setMethodCallHandler(this);
+        channel.setMethodCallHandler(this);
 //        if (bindingInstance != null)
 //            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
     }
