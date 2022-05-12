@@ -23,7 +23,7 @@ import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.platform.PlatformView;
 
 public class BannerAdView extends FlutterActivity implements PlatformView {
-//    final static String TAG = "FLUTTER APPLOVIN : - ";
+    final static String TAG = "FLUTTER APPLOVIN : - ";
     final int viewId;
     final MaxAdView bannerView;
     AppLovinAdSize size;
@@ -62,35 +62,42 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
             @Override
                 public void onAdExpanded(MaxAd ad) {
                 instance.callback(ad.getAdUnitId(), "onAdExpanded", null);
+                Log.d(TAG, "onAdExpanded: ");
             }
 
             @Override
             public void onAdCollapsed(MaxAd ad) {
                 instance.callback(ad.getAdUnitId(), "onAdCollapsed", null);
+                Log.d(TAG, "onAdCollapsed: ");
             }
 
             @Override
             public void onAdLoaded(MaxAd ad) {
                 instance.callback(ad.getAdUnitId(), "onAdLoaded", null);
+                Log.d(TAG, "onAdLoaded: ");
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 instance.callback(ad.getAdUnitId(), "onAdDisplayed", null);
+                Log.d(TAG, "onAdDisplayed: instance state "+ (instance == null));
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
                 instance.callback(ad.getAdUnitId(), "onAdHidden", null);
+                Log.d(TAG, "onAdHidden: ");
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
                 instance.callback(ad.getAdUnitId(), "onAdClicked", null);
+                Log.d(TAG, "onAdClicked: ");
             }
 
             @Override
             public void onAdLoadFailed(String adUnitId, MaxError error) {
+                Log.d(TAG, "onAdLoadFailed: ");
                 HashMap<String,String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
                 err.put("message", error.getMessage());
@@ -99,6 +106,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
 
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                Log.d(TAG, "onAdDisplayFailed: ");
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
                 err.put("message", error.getMessage());

@@ -2,6 +2,7 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -23,6 +24,7 @@ import io.flutter.plugin.platform.PlatformViewRegistry;
  * ApplovinMaxMediationPlugin
  */
 public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
+    final static String TAG = "FLUTTER APPLOVIN : - ";
     private ApplovinMaxMediationPlugin instance;
     public Context context;
     private MethodChannel channel;
@@ -83,6 +85,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
+        Log.d(TAG, "registerBannerFactory: instance is null when registerBannerFactoryCalled ? :- " + (instance==null));
         registry.registerViewFactory("/Banner", new BannerFactory(instance));
     }
 
