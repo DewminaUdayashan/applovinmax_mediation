@@ -36,7 +36,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
-        channel = new MethodChannel(bindingInstance.getBinaryMessenger(), "applovinmax_mediation");
+        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation");
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -77,7 +77,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
         Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
-                " error is null : " + (error == null)+", is channel null ? :- "+(channel==null));
+                " error is null : " + (error == null) + ", is channel null ? :- " + (channel == null));
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {
@@ -109,28 +109,33 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        Log.d(TAG, "onDetachedFromEngine: ");
         channel.setMethodCallHandler(null);
     }
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+        Log.d(TAG, "onAttachedToActivity: ");
         activity = binding.getActivity();
+        channel.setMethodCallHandler(this);
 //        if (bindingInstance != null)
 //            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
     }
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
-
+        Log.d(TAG, "onDetachedFromActivityForConfigChanges: ");
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+        Log.d(TAG, "onReattachedToActivityForConfigChanges: ");
         activity = binding.getActivity();
+        channel.setMethodCallHandler(this);
     }
 
     @Override
     public void onDetachedFromActivity() {
-
+        Log.d(TAG, "onDetachedFromActivity: ");
     }
 }
