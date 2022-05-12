@@ -62,37 +62,37 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         bannerView.setListener(new MaxAdViewAdListener() {
             @Override
             public void onAdExpanded(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdExpanded", null);
+                instance.callback(adUnitId, "onAdExpanded", null);
                 Log.d(TAG, "onAdExpanded: ");
             }
 
             @Override
             public void onAdCollapsed(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdCollapsed", null);
+                instance.callback(adUnitId, "onAdCollapsed", null);
                 Log.d(TAG, "onAdCollapsed: ");
             }
 
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.d(TAG, "onAdLoaded: ");
-                instance.callback(ad.getAdUnitId(), "onAdLoaded", null);
+                instance.callback(adUnitId, "onAdLoaded", null);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.d(TAG, "onAdDisplayed: instance state " + (instance == null));
-                instance.callback(ad.getAdUnitId(), "onAdDisplayed", null);
+                instance.callback(adUnitId, "onAdDisplayed", null);
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdHidden", null);
+                instance.callback(adUnitId, "onAdHidden", null);
                 Log.d(TAG, "onAdHidden: ");
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdClicked", null);
+                instance.callback(adUnitId, "onAdClicked", null);
                 Log.d(TAG, "onAdClicked: ");
             }
 

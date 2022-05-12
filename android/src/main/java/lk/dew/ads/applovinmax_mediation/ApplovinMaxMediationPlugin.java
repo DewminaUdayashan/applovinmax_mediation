@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
@@ -85,7 +86,22 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         if (error != null) {
             data.put("error", error);
         }
-        activity.runOnUiThread(() -> channel.invokeMethod(adUnitId, data));
+        activity.runOnUiThread(() -> channel.invokeMethod(adUnitId, data, new Result() {
+            @Override
+            public void success(@Nullable Object result) {
+                Log.d(TAG, "success: callback result");
+            }
+
+            @Override
+            public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+                Log.d(TAG, "error: callback result");
+            }
+
+            @Override
+            public void notImplemented() {
+                Log.d(TAG, "notImplemented: callback result");
+            }
+        }));
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
