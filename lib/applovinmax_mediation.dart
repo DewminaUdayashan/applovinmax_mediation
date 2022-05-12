@@ -31,10 +31,10 @@ class ApplovinMaxMediation {
     Function? onAdDisplayed,
     Function? onAdHidden,
     Function? onAdClicked,
-    Function? onAdReceived,
-    Function? onAdLeftApplication,
-    Function(MaxError? error)? onAdFailedToReceiveAd,
-    Function(MaxError? error)? onAdFailedToDisplay,
+    Function? onAdExpanded,
+    Function? onAdCollapsed,
+    Function(MaxError? error)? onAdLoadFailed,
+    Function(MaxError? error)? onAdDisplayFailed,
   }) {
     _channel.setMethodCallHandler((MethodCall call) async {
       print("APPLOVINMAXLISTNER" + " setBannerAdCalbacks Called...");
@@ -55,18 +55,17 @@ class ApplovinMaxMediation {
           case 'onAdClicked':
             onAdClicked?.call();
             break;
-          case 'onAdReceived':
-            onAdReceived?.call();
+          case 'onAdExpanded':
+            onAdExpanded?.call();
             break;
-          case 'onAdLeftApplication':
-            onAdLeftApplication?.call();
+          case 'onAdCollapsed':
+            onAdCollapsed?.call();
             break;
           case 'onAdLoadFailed':
-            onAdFailedToReceiveAd
-                ?.call(MaxError.fromMap(call.arguments.get('error')));
+            onAdLoadFailed?.call(MaxError.fromMap(call.arguments.get('error')));
             break;
           case 'onAdDisplayFailed':
-            onAdFailedToDisplay
+            onAdDisplayFailed
                 ?.call(MaxError.fromMap(call.arguments.get('error')));
             break;
           default:

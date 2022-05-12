@@ -2,12 +2,9 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
 
@@ -29,7 +26,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     private ApplovinMaxMediationPlugin instance;
     public Context context;
     private MethodChannel channel;
-    private MethodChannel bannerChannel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
 
@@ -38,7 +34,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
         channel = new MethodChannel(bindingInstance.getBinaryMessenger(), "applovinmax_mediation");
-        bannerChannel = new MethodChannel(bindingInstance.getBinaryMessenger(), "applovinmax_mediation/banner");
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -79,7 +74,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
-        final HashMap data = new HashMap();
+        final HashMap<String,Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {
             data.put("error", error);
