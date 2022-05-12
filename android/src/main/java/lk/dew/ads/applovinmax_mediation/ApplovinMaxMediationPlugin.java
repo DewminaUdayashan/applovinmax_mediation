@@ -31,7 +31,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     final static String TAG = "FLUTTER APPLOVIN : - ";
     private ApplovinMaxMediationPlugin instance;
     public Context context;
-    private MethodChannel channel;
+    public MethodChannel channel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
 
@@ -87,10 +87,10 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 //        if (error != null) {
 //            data.put("error", error);
 //        }
-        activity.runOnUiThread(new Runnable() {
+        ins.activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                instance.activity.runOnUiThread(() -> instance.channel.invokeMethod(adUnitId, "data", new Result() {
+                ins.activity.runOnUiThread(() -> ins.channel.invokeMethod(adUnitId, "data", new Result() {
                     @Override
                     public void success(@Nullable Object result) {
                         Log.d(TAG, "success: callback result");
