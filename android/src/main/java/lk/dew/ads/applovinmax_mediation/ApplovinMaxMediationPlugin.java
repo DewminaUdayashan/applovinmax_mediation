@@ -58,25 +58,35 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
             case "InitSdk":
                 initApplovinSDK(result);
                 break;
+            case "setVerboseLogging":
+                setVerboseLogging((boolean) call.arguments);
             default:
                 result.notImplemented();
                 break;
         }
     }
 
+    private void setVerboseLogging(boolean arguments) {
+        AppLovinSdk.getInstance(context).getSettings().setVerboseLogging(arguments);
+    }
+
     private void initApplovinSDK(@NonNull Result result) {
         AppLovinSdk.getInstance(context).setMediationProvider("max");
         AppLovinSdk.initializeSdk(context, config -> {
-            if (config.getConsentDialogState() == AppLovinSdkConfiguration.ConsentDialogState.APPLIES) {
-                // Show user consent dialog
-                result.success("APPLIES");
-            } else if (config.getConsentDialogState() == AppLovinSdkConfiguration.ConsentDialogState.DOES_NOT_APPLY) {
-                // No need to show consent dialog, proceed with initialization
-                result.success("DOES_NOT_APPLY");
-            } else {
-                // Consent dialog state is unknown. Proceed with initialization, but check if the consent
-                // dialog should be shown on the next application initialization
-                result.success("UNKNOWN");
+            switch (config.getConsentDialogState()) {
+                case APPLIES:
+                    // Show user consent dialog
+                    result.success("APPLIES");
+                    break;
+                case DOES_NOT_APPLY:
+                    // No need to show consent dialog, proceed with initialization
+                    result.success("DOES_NOT_APPLY");
+                    break;
+                default:
+                    // Consent dialog state is unknown. Proceed with initialization, but check if the consent
+                    // dialog should be shown on the next application initialization
+                    result.success("UNKNOWN");
+                    break;
             }
         });
     }
@@ -95,7 +105,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
             @Override
             public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                Log.d(TAG, "error: callback result"+errorMessage+ "\n "+errorDetails);
+                Log.d(TAG, "error: callback result" + errorMessage + "\n " + errorDetails);
             }
 
             @Override
@@ -112,32 +122,27 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        Log.d(TAG, "onDetachedFromEngine: ");
-//        channel.setMethodCallHandler(null);
+        channel.setMethodCallHandler(null);
     }
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
-        Log.d(TAG, "onAttachedToActivity: ======================================================");
         channel.setMethodCallHandler(this);
     }
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
-        Log.d(TAG, "onDetachedFromActivityForConfigChanges: ============================================");
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-        Log.d(TAG, "onReattachedToActivityForConfigChanges: ============================================");
         activity = binding.getActivity();
-
     }
 
     @Override
     public void onDetachedFromActivity() {
-        Log.d(TAG, "onDetachedFromActivity: ========================================================");
+        channel.setMethodCallHandler(null);
     }
 
 
