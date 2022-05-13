@@ -18,6 +18,7 @@ class ApplovinMaxMediation {
 
   /// pass bool to set applovin sdk verbose logging
   /// to turn on or off
+  /// can also set from manifest :- [https://dash.applovin.com/documentation/mediation/android/getting-started/advanced-settings]
   static Future<void> setVerboseLogging(bool isTurnOn) async {
     await _channel.invokeMethod('setVerboseLogging', isTurnOn);
   }
