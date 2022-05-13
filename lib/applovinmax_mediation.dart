@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:applovinmax_mediation/shared/applovin_max_callback.dart';
+import 'package:applovinmax_mediation/shared/max_error.dart';
 import 'package:flutter/foundation.dart';
 
 import 'shared/enums.dart';
@@ -7,9 +10,11 @@ import 'package:flutter/services.dart';
 
 class ApplovinMaxMediation {
   static const MethodChannel _channel = MethodChannel('applovinmax_mediation');
+  static const MethodChannel _callbackChannel =
+      MethodChannel('callback_channel');
 
   @protected
-  static MethodChannel get getChannel => _channel;
+  static MethodChannel get getChannel => _callbackChannel;
 
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
@@ -63,7 +68,61 @@ class ApplovinMaxMediation {
   /// show interstitial ad
   /// if you want to show specific interstitial ad,
   /// you can send ad unit id to show particular ad
-  static Future<void> showInterstitialAd(String? adUnitId) async {
+
+  /// if need to trigger function for ad callback
+  /// send instance of a concrete class of [ApplovinMaxCallback] class.
+  /// [ApplovinMaxCallback] is an abstract class
+  /// create new class and extends it from [ApplovinMaxCallback] to
+  /// override its callback methods
+  static Future<void> showInterstitialAd({
+    required String adUnitId,
+    ApplovinMaxCallback? listener,
+  }) async {
     await _channel.invokeMethod('showInterstitialAd', adUnitId);
+    _setInterCallbacks(adUnitId, listener);
+  }
+
+  static Future<void> _setInterCallbacks(
+      String adUnitId, ApplovinMaxCallback? callbacks) async {
+    //
+    getChannel.setMethodCallHandler((MethodCall call) async {
+      print(
+          'Flutter Applovin :- Dart side ad unit id from java ${call.method}, adunitid : $adUnitId');
+      if (call.method == adUnitId) {
+        switch (call.arguments['callback']) {
+          case 'onAdLoaded':
+            callbacks?.onAdLoaded.call();
+            break;
+          case 'onAdDisplayed':
+            callbacks?.onAdDisplayed.call();
+            break;
+          case 'onAdHidden':
+            callbacks?.onAdHidden.call();
+            break;
+          case 'onAdClicked':
+            callbacks?.onAdClicked.call();
+            break;
+          case 'onAdExpanded':
+            callbacks?.onAdExpanded.call();
+            break;
+          case 'onAdCollapsed':
+            callbacks?.onAdCollapsed.call();
+            break;
+          case 'onAdLoadFailed':
+            final error = jsonEncode(call.arguments['error']);
+            callbacks?.onAdLoadFailed.call(MaxError.fromMap(jsonDecode(error)));
+            break;
+          case 'onAdDisplayFailed':
+            final error = jsonEncode(call.arguments['error']);
+            callbacks?.onAdDisplayFailed
+                .call(MaxError.fromMap(jsonDecode(error)));
+            break;
+          default:
+            break;
+        }
+      } else {
+        print("FLUTTER APPLOVIN :- Ad unit id dosent match");
+      }
+    });
   }
 }

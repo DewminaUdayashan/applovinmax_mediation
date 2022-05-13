@@ -30,7 +30,7 @@ class ApplovinMaxBanner extends StatelessWidget {
 
   /// if need to trigger function for ad callback
   /// send instance of a concrete class of [ApplovinMaxCallback] class.
-  /// [ApplovinMaxCallback] is a abstract class
+  /// [ApplovinMaxCallback] is an abstract class
   /// create new class and extends it from [ApplovinMaxCallback] to
   /// override its callback methods
   final ApplovinMaxCallback? listner;
@@ -55,8 +55,15 @@ class ApplovinMaxBanner extends StatelessWidget {
     required String adUnitId,
     ApplovinMaxCallback? callbacks,
   }) {
+    print('Flutter Applovin : - Dart side ad unit id from dart $adUnitId');
+
     ApplovinMaxMediation.getChannel
         .setMethodCallHandler((MethodCall call) async {
+      print('Flutter Applovin : - Dart side ' + call.method.toString());
+      print('Flutter Applovin : - Dart side ' + call.arguments.toString());
+      print('Flutter Applovin : - Dart side ' + adUnitId.toString());
+      print(
+          'Flutter Applovin : - Dart side ad unit id from java ${call.method}');
       if (call.method == adUnitId) {
         switch (call.arguments['callback']) {
           case 'onAdLoaded':

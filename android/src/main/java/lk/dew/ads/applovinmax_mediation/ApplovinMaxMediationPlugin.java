@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 
 import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
-import com.applovin.sdk.AppLovinSdkConfiguration;
 
 import java.util.HashMap;
 
@@ -33,7 +32,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     static public MethodChannel channel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
-    private InterstitialAd interstitialAd;
+    private InterAd interstitialAd;
 
     public ApplovinMaxMediationPlugin() {
         Log.d(TAG, "================ Applovin Mediation Plugin Initialized ================");
@@ -44,7 +43,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
-
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -119,6 +117,10 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
+    }
+
+    public void rewardedCallback(String adUnitId, String callback, HashMap<String, String> error) {
+        Log.d(TAG, "callback: " + adUnitId + ",");
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null)
@@ -155,7 +157,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
         channel.setMethodCallHandler(this);
-        interstitialAd = new InterstitialAd();
+        interstitialAd = new InterAd(instance);
     }
 
     @Override
