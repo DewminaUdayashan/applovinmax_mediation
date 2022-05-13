@@ -36,9 +36,9 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     final ApplovinMaxMediationPlugin instance;
     MethodChannel channel;
 
-    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId, MethodChannel channel) {
-        Log.d(TAG, "BannerAdView: The instance came from the params is null ? :- " + (instance == null));
-        Log.d(TAG, "BannerAdView: The channel came from the params is null ? :- " + (channel == null));
+    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
+        Log.d(TAG, "BannerAdView: The instance came from the params is null ? :- " );
+        Log.d(TAG, "BannerAdView: The channel came from the params is null ? :- ");
 
         this.channel = channel;
         this.instance = instance;
@@ -69,37 +69,37 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         bannerView.setListener(new MaxAdViewAdListener() {
             @Override
             public void onAdExpanded(MaxAd ad) {
-                callback(adUnitId, "onAdExpanded", null, instance);
+                instance.callback(adUnitId, "onAdExpanded", null);
                 Log.d(TAG, "onAdExpanded: ");
             }
 
             @Override
             public void onAdCollapsed(MaxAd ad) {
-                callback(adUnitId, "onAdCollapsed", null, instance);
+                instance.callback(adUnitId, "onAdCollapsed", null);
                 Log.d(TAG, "onAdCollapsed: ");
             }
 
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.d(TAG, "onAdLoaded: ");
-                callback(adUnitId, "onAdLoaded", null, instance);
+                instance.callback(adUnitId, "onAdLoaded", null);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.d(TAG, "onAdDisplayed: instance state " + (instance == null));
-                callback(adUnitId, "onAdDisplayed", null, instance);
+                instance.callback(adUnitId, "onAdDisplayed", null);
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
-                callback(adUnitId, "onAdHidden", null, instance);
+                instance.callback(adUnitId, "onAdHidden", null);
                 Log.d(TAG, "onAdHidden: ");
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                callback(adUnitId, "onAdClicked", null, instance);
+                instance.callback(adUnitId, "onAdClicked", null);
                 Log.d(TAG, "onAdClicked: ");
             }
 
@@ -109,7 +109,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
                 err.put("message", error.getMessage());
-               callback(adUnitId, "onAdLoadFailed", err, instance);
+                instance.callback(adUnitId, "onAdLoadFailed", err);
             }
 
             @Override
@@ -118,7 +118,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
                 err.put("message", error.getMessage());
-                callback(adUnitId, "onAdDisplayFailed", err, instance);
+                instance.callback(adUnitId, "onAdDisplayFailed", err);
             }
         });
     }
@@ -137,36 +137,10 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     @Override
     public void dispose() {
         bannerView.destroy();
-        instance.callback(adUnitId, "onAdViewDisposed", null, instance);
+        instance.callback(adUnitId, "onAdViewDisposed", null);
     }
 
 
-    public void callback(String adUnitId, String callback, HashMap<String, String> error, ApplovinMaxMediationPlugin ins) {
-        Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
-                " error is null : " + (error == null) + ", is channel null ? :- " + (this.channel == null));
-        final HashMap<String, Object> data = new HashMap<>();
-        data.put("callback", callback);
-        if (error != null) {
-            data.put("error", error);
-//        }
-            this.channel.invokeMethod(adUnitId, "data", new MethodChannel.Result() {
-                @Override
-                public void success(@Nullable Object result) {
-                    Log.d(TAG, "success: callback result");
-                }
-
-                @Override
-                public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                    Log.d(TAG, "error: callback result");
-                }
-
-                @Override
-                public void notImplemented() {
-                    Log.d(TAG, "notImplemented: callback result");
-                }
-            });
-        }
-    }
 //        if (channel != null)
 //            new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
 //                @Override
