@@ -98,7 +98,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
             @Override
             public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                Log.d(TAG, "error: callback result");
+                Log.d(TAG, "error: callback result"+errorMessage.toString()+ "\n "+errorDetails.toString());
             }
 
             @Override
