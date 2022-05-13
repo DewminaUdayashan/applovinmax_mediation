@@ -10,9 +10,11 @@ import 'package:flutter/services.dart';
 
 class ApplovinMaxMediation {
   static const MethodChannel _channel = MethodChannel('applovinmax_mediation');
+  static const MethodChannel _callbackChannel =
+      MethodChannel('callback_channel');
 
   @protected
-  static MethodChannel get getChannel => _channel;
+  static MethodChannel get getChannel => _callbackChannel;
 
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
@@ -74,10 +76,10 @@ class ApplovinMaxMediation {
   /// override its callback methods
   static Future<void> showInterstitialAd({
     required String adUnitId,
-    ApplovinMaxCallback? callbacks,
+    ApplovinMaxCallback? listener,
   }) async {
     await _channel.invokeMethod('showInterstitialAd', adUnitId);
-    _setInterCallbacks(adUnitId, callbacks);
+    _setInterCallbacks(adUnitId, listener);
   }
 
   static Future<void> _setInterCallbacks(
