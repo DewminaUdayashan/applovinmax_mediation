@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
 
@@ -60,10 +61,16 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 break;
             case "setVerboseLogging":
                 setVerboseLogging((boolean) call.arguments);
+            case "setHasUserConsent":
+                setHaseUserConsent((boolean) call.arguments);
             default:
                 result.notImplemented();
                 break;
         }
+    }
+
+    private void setHaseUserConsent(boolean arguments) {
+        AppLovinPrivacySettings.setHasUserConsent( arguments, context );
     }
 
     private void setVerboseLogging(boolean arguments) {
