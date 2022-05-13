@@ -52,7 +52,7 @@ class ApplovinMaxBanner extends StatelessWidget {
           (adUnitId == call.method).toString());
       //
       if (call.method == adUnitId) {
-        switch (call.arguments.get('callback')) {
+        switch (call.arguments['callback']) {
           case 'onAdLoaded':
             callbacks?.onAdLoaded.call();
             break;
@@ -73,11 +73,11 @@ class ApplovinMaxBanner extends StatelessWidget {
             break;
           case 'onAdLoadFailed':
             callbacks?.onAdLoadFailed
-                .call(MaxError.fromMap(call.arguments.get('error')));
+                .call(MaxError.fromMap(call.arguments['error']));
             break;
           case 'onAdDisplayFailed':
             callbacks?.onAdDisplayFailed
-                .call(MaxError.fromMap(call.arguments.get('error')));
+                .call(MaxError.fromMap(call.arguments['error']));
             break;
           default:
             break;
