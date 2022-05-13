@@ -30,7 +30,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     private ApplovinMaxMediationPlugin instance;
     public Context context;
     static public MethodChannel channel;
-    static public MethodChannel callbackChannel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
     private InterAd interstitialAd;
@@ -44,13 +43,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
-        callbackChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(),"callback_channel");
-        callbackChannel.setMethodCallHandler(new MethodCallHandler() {
-            @Override
-            public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-                Log.d(TAG, "onMethodCall of callback channel: "+call.method);
-            }
-        });
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -125,12 +117,15 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
-        Log.d(TAG, "callback: "+adUnitId+",");
+    }
+
+    public void rewardedCallback(String adUnitId, String callback, HashMap<String, String> error) {
+        Log.d(TAG, "callback: " + adUnitId + ",");
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null)
             data.put("error", error);
-        callbackChannel.invokeMethod(adUnitId, data, new Result() {
+        channel.invokeMethod(adUnitId, data, new Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d(TAG, "success: callback result");
