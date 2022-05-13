@@ -14,13 +14,14 @@ import com.applovin.mediation.ads.MaxInterstitialAd;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-public class InterstitialAd
+public class InterAd
         implements MaxAdListener {
+    private static final String TAG = "Flutter Applovin : - InterAD : ";
     private MaxInterstitialAd interstitialAd;
     private int retryAttempt;
     private ApplovinMaxMediationPlugin instance;
 
-    public InterstitialAd(@NonNull ApplovinMaxMediationPlugin instance) {
+    public InterAd(@NonNull ApplovinMaxMediationPlugin instance) {
         this.instance = instance;
     }
 
@@ -85,7 +86,6 @@ public class InterstitialAd
     @Override
     public void onAdClicked(final MaxAd maxAd) {
         instance.callback(maxAd.getAdUnitId(), "onAdClicked", null);
-
     }
 
     @Override

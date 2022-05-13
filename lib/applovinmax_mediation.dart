@@ -86,6 +86,8 @@ class ApplovinMaxMediation {
       String adUnitId, ApplovinMaxCallback? callbacks) async {
     //
     getChannel.setMethodCallHandler((MethodCall call) async {
+      print(
+          'Flutter Applovin :- Dart side ad unit id from java ${call.method}, adunitid : $adUnitId');
       if (call.method == adUnitId) {
         switch (call.arguments['callback']) {
           case 'onAdLoaded':
@@ -119,7 +121,7 @@ class ApplovinMaxMediation {
             break;
         }
       } else {
-        debugPrint("FLUTTER APPLOVIN :- Ad unit id dosent match");
+        print("FLUTTER APPLOVIN :- Ad unit id dosent match");
       }
     });
   }
