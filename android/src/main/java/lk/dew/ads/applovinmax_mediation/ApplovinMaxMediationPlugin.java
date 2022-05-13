@@ -176,6 +176,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     @Override
     public void onListen(Object arguments, EventChannel.EventSink events) {
+        events.success(TAG+" Event channel connected");
         eventSink = events;
     }
 
