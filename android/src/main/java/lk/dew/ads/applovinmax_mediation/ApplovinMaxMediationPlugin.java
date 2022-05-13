@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
 
@@ -32,6 +33,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     static public MethodChannel channel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
+    private InterstitialAd interstitialAd;
 
     public ApplovinMaxMediationPlugin() {
         Log.d(TAG, "================ Applovin Mediation Plugin Initialized ================");
@@ -60,10 +62,34 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 break;
             case "setVerboseLogging":
                 setVerboseLogging((boolean) call.arguments);
+            case "setHasUserConsent":
+                setHaseUserConsent((boolean) call.arguments);
+            case "createInterstitialAd":
+                createInter(call.arguments.toString());
+            case "isInterstitialAdReady":
+                result.success(isInterReady());
+            case "showInterstitialAd":
+                showInter(call.arguments);
             default:
                 result.notImplemented();
                 break;
         }
+    }
+
+    private boolean isInterReady() {
+        return interstitialAd.isReady();
+    }
+
+    private void showInter(@Nullable Object arguments) {
+        interstitialAd.showAd(arguments);
+    }
+
+    private void createInter(String adUnitId) {
+        interstitialAd.createInterstitialAd(activity, adUnitId);
+    }
+
+    private void setHaseUserConsent(boolean arguments) {
+        AppLovinPrivacySettings.setHasUserConsent(arguments, context);
     }
 
     private void setVerboseLogging(boolean arguments) {
@@ -129,6 +155,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
         channel.setMethodCallHandler(this);
+        interstitialAd = new InterstitialAd();
     }
 
     @Override
