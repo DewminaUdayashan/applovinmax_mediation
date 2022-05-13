@@ -108,7 +108,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
                 Log.d(TAG, "onAdLoadFailed: ");
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage());
+                err.put("message", error.getMessage().replace(":",""));
                 instance.callback(adUnitId, "onAdLoadFailed", err);
             }
 
@@ -117,7 +117,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
                 Log.d(TAG, "onAdDisplayFailed: ");
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage());
+                err.put("message", error.getMessage().replace(":",""));
                 instance.callback(adUnitId, "onAdDisplayFailed", err);
             }
         });
