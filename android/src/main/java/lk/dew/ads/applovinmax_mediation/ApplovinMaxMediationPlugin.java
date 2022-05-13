@@ -93,7 +93,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                activity.runOnUiThread(() -> channel.invokeMethod(adUnitId, "data", new Result() {
+                  channel.invokeMethod(adUnitId, "data", new Result() {
                     @Override
                     public void success(@Nullable Object result) {
                         Log.d(TAG, "success: callback result");
@@ -108,7 +108,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                     public void notImplemented() {
                         Log.d(TAG, "notImplemented: callback result");
                     }
-                }));
+                });
             }
         });
 
