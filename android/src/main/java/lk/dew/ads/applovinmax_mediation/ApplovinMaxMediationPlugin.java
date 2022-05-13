@@ -107,7 +107,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 //            data.put("error", error);
 //        }
 //        /
-        eventSink.success("EVENT SINK FOR FLUTTER : " + callback);
+//        eventSink.success("EVENT SINK FOR FLUTTER : " + callback);
         channel.invokeMethod(callback, null, new Result() {
             @Override
             public void success(@Nullable Object result) {

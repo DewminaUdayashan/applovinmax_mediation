@@ -1,3 +1,4 @@
+import 'package:applovinmax_mediation/applovinmax_mediation.dart';
 import 'package:applovinmax_mediation/shared/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,10 @@ class ApplovinMaxBanner extends StatelessWidget {
       creationParams: {'size': sizes[size], 'adUnitId': adUnitId},
       creationParamsCodec: const StandardMessageCodec(),
       onPlatformViewCreated: (int vi) {
-        final MethodChannel _channel = MethodChannel('/banner$vi');
+        ApplovinMaxMediation.setBannerAdCallbacks(
+          adUnitId: adUnitId,
+          callbacks: ApplovinListener(),
+        );
         // setBannerAdCallbacks(
         //   adUnitId: adUnitId,
         //   channel: _channel,
