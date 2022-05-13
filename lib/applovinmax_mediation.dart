@@ -16,6 +16,22 @@ class ApplovinMaxMediation {
     return version;
   }
 
+  /// initialize applovin sdk
+  /// return value will be consent dialog state
+  /// you should show consent dialog and get user consent if required
+  /// [ConsentDialogState] is an enum indicating the relevant state
+  static Future<ConsentDialogState> initSDK() async {
+    final consentDialogState = await _channel.invokeMethod('InitSdk');
+    switch (consentDialogState) {
+      case 'APPLIES':
+        return ConsentDialogState.applies;
+      case 'DOES_NOT_APPLY':
+        return ConsentDialogState.doesNotApply;
+      default:
+        return ConsentDialogState.unknown;
+    }
+  }
+
   /// pass bool to set applovin sdk verbose logging
   /// to turn on or off
   /// can also set from manifest :- [https://dash.applovin.com/documentation/mediation/android/getting-started/advanced-settings]
@@ -33,19 +49,21 @@ class ApplovinMaxMediation {
     await _channel.invokeMethod('setHasUserConsent', isHasConsent);
   }
 
-  /// initialize applovin sdk
-  /// return value will be consent dialog state
-  /// you should show consent dialog and get user consent if required
-  /// [ConsentDialogState] is an enum indicating the relevant state
-  static Future<ConsentDialogState> initSDK() async {
-    final consentDialogState = await _channel.invokeMethod('InitSdk');
-    switch (consentDialogState) {
-      case 'APPLIES':
-        return ConsentDialogState.applies;
-      case 'DOES_NOT_APPLY':
-        return ConsentDialogState.doesNotApply;
-      default:
-        return ConsentDialogState.unknown;
-    }
+  /// create a new interstitial ad unit
+  /// send your ad unit id from applovin dashboard
+  static Future<void> createInterstitialAd(String adUnitId) async {
+    await _channel.invokeMethod('createInterstitialAd', adUnitId);
+  }
+
+  /// use to check if interstitial ad was created & can show
+  static Future<bool> isInterstitialAdReady() async {
+    return await _channel.invokeMethod('isInterstitialAdReady');
+  }
+
+  /// show interstitial ad
+  /// if you want to show specific interstitial ad,
+  /// you can send ad unit id to show particular ad
+  static Future<void> showInterstitialAd(String? adUnitId) async {
+    await _channel.invokeMethod('showInterstitialAd', adUnitId);
   }
 }
