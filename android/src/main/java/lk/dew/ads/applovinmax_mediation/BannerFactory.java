@@ -27,6 +27,6 @@ MethodChannel channel;
     @Override
     public PlatformView create(Context context, int viewId, Object args) {
         Log.d(TAG, "create: BannerFactory channel was null in create method ? "+(this.channel==null));
-        return new BannerAdView(context, (HashMap) args,instance, viewId,this.channel);
+        return new BannerAdView(context, (HashMap) args,instance, viewId);
     }
 }

@@ -29,7 +29,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     final static String TAG = "FLUTTER APPLOVIN : - ";
     private ApplovinMaxMediationPlugin instance;
     public Context context;
-    public MethodChannel channel;
+   static public MethodChannel channel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
 
@@ -41,8 +41,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
-        this.channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
-        this.channel.setMethodCallHandler(this);
+        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
+        channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
         Log.d(TAG, "onAttachedToEngine: is channel null on initially : " + (channel == null));
