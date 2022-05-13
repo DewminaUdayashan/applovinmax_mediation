@@ -19,7 +19,7 @@ class ApplovinMaxMediation {
   /// pass bool to set applovin sdk verbose logging
   /// to turn on or off
   static Future<void> setVerboseLogging(bool isTurnOn) async {
-    await _channel.invokeMethod('setVerboseLogging');
+    await _channel.invokeMethod('setVerboseLogging', isTurnOn);
   }
 
   /// initialize applovin sdk
