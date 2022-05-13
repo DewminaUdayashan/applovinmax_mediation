@@ -30,6 +30,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     private ApplovinMaxMediationPlugin instance;
     public Context context;
     static public MethodChannel channel;
+    static public MethodChannel bannerChannel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
 
@@ -42,6 +43,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
+        bannerChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "banner_channel", StandardMethodCodec.INSTANCE);
+
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -84,14 +87,14 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
 //        Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
 //                " error is null : " + (error == null) + ", is channel null ? :- " + (instance.channel == null));
-        Log.d(TAG, "callback: is channel null ? " + (channel == null));
+        Log.d(TAG, "callback: is channel null ? " + (bannerChannel == null));
 //        final HashMap<String, Object> data = new HashMap<>();
 //        data.put("callback", callback);
 //        if (error != null) {
 //            data.put("error", error);
 //        }
 
-        channel.invokeMethod(adUnitId, "data", new Result() {
+        bannerChannel.invokeMethod(adUnitId, "data", new Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d(TAG, "success: callback result");

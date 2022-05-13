@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 class ApplovinMaxMediation {
   static const MethodChannel _channel = MethodChannel('applovinmax_mediation');
-  static const MethodChannel bannerChannel = MethodChannel('banner');
+  static const MethodChannel bannerChannel = MethodChannel('banner_channel');
 
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
@@ -37,7 +37,7 @@ class ApplovinMaxMediation {
     Function(MaxError? error)? onAdDisplayFailed,
   }) {
     print("FLUTTER APPLOVIN : - DART SIDE - Callback listner registered");
-    _channel.setMethodCallHandler((MethodCall call) async {
+    bannerChannel.setMethodCallHandler((MethodCall call) async {
       print("FLUTTER APPLOVIN : - DART SIDE - " + call.method.toString());
       print("FLUTTER APPLOVIN : - DART SIDE - " + call.arguments.toString());
       print("FLUTTER APPLOVIN : - DART SIDE ad unit id : - " + adUnitId);
