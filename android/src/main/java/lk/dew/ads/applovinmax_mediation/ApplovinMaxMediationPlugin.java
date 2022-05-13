@@ -155,7 +155,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
         channel.setMethodCallHandler(this);
-        interstitialAd = new InterstitialAd();
+        interstitialAd = new InterstitialAd(instance);
     }
 
     @Override

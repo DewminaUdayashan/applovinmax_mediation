@@ -30,7 +30,7 @@ class ApplovinMaxBanner extends StatelessWidget {
 
   /// if need to trigger function for ad callback
   /// send instance of a concrete class of [ApplovinMaxCallback] class.
-  /// [ApplovinMaxCallback] is a abstract class
+  /// [ApplovinMaxCallback] is an abstract class
   /// create new class and extends it from [ApplovinMaxCallback] to
   /// override its callback methods
   final ApplovinMaxCallback? listner;
