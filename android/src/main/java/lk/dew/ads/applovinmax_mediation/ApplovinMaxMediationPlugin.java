@@ -26,7 +26,7 @@ import io.flutter.plugin.platform.PlatformViewRegistry;
 /**
  * ApplovinMaxMediationPlugin
  */
-public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware, EventChannel.StreamHandler {
+public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
     final static String TAG = "FLUTTER APPLOVIN : - ";
     private ApplovinMaxMediationPlugin instance;
     public Context context;
@@ -46,7 +46,18 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         bindingInstance = flutterPluginBinding;
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
         eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "banner_event");
-        eventChannel.setStreamHandler(this);
+        eventChannel.setStreamHandler(new EventChannel.StreamHandler() {
+            @Override
+            public void onListen(Object arguments, EventChannel.EventSink events) {
+                Log.d(TAG, "onListen: EVENT CHANNEL CONNECTED ====================");
+                eventSink = events;
+            }
+
+            @Override
+            public void onCancel(Object arguments) {
+
+            }
+        });
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -174,14 +185,5 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         Log.d(TAG, "onDetachedFromActivity: ========================================================");
     }
 
-    @Override
-    public void onListen(Object arguments, EventChannel.EventSink events) {
-        events.success(TAG+" Event channel connected");
-        eventSink = events;
-    }
-
-    @Override
-    public void onCancel(Object arguments) {
-
-    }
+   
 }
