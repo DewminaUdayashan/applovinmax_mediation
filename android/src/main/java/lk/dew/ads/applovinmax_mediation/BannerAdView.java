@@ -38,6 +38,8 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
 
     public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId, MethodChannel channel) {
         Log.d(TAG, "BannerAdView: The instance came from the params is null ? :- " + (instance == null));
+        Log.d(TAG, "BannerAdView: The channel came from the params is null ? :- " + (channel == null));
+
         this.channel = channel;
         this.instance = instance;
         this.viewId = viewId;
@@ -67,7 +69,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         bannerView.setListener(new MaxAdViewAdListener() {
             @Override
             public void onAdExpanded(MaxAd ad) {
-                instance.callback(adUnitId, "onAdExpanded", null, instance);
+                callback(adUnitId, "onAdExpanded", null, instance);
                 Log.d(TAG, "onAdExpanded: ");
             }
 
@@ -141,13 +143,13 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error, ApplovinMaxMediationPlugin ins) {
         Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
-                " error is null : " + (error == null) + ", is channel null ? :- " + (ins.channel == null));
+                " error is null : " + (error == null) + ", is channel null ? :- " + (this.channel == null));
         final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
         if (error != null) {
             data.put("error", error);
 //        }
-            channel.invokeMethod(adUnitId, "data", new MethodChannel.Result() {
+            this.channel.invokeMethod(adUnitId, "data", new MethodChannel.Result() {
                 @Override
                 public void success(@Nullable Object result) {
                     Log.d(TAG, "success: callback result");
