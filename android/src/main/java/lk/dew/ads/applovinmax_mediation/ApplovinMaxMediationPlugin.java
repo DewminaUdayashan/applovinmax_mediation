@@ -90,7 +90,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         data.put("callback", callback);
         if (error != null)
             data.put("error", error);
-        channel.invokeMethod(callback, data, new Result() {
+        channel.invokeMethod(adUnitId, data, new Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d(TAG, "success: callback result");
