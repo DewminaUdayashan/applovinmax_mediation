@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 class ApplovinMaxMediation {
   static const MethodChannel _channel = MethodChannel('applovinmax_mediation');
   static const MethodChannel bannerChannel = MethodChannel('banner_channel');
+  static const EventChannel _eventChannel = EventChannel('banner_channel');
 
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
@@ -43,6 +44,10 @@ class ApplovinMaxMediation {
       print("FLUTTER APPLOVIN : - DART SIDE ad unit id : - " + adUnitId);
       print("FLUTTER APPLOVIN : - DART SIDE ad unit id equals ? : - " +
           (adUnitId == call.method).toString());
+
+      _eventChannel.receiveBroadcastStream().listen((event) {
+        print('FLUTTER APPLOVIN : - DART SIDE - EVENT  $event');
+      });
       //
       if (call.method == adUnitId) {
         switch (call.arguments.get('callback')) {
