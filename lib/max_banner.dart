@@ -1,6 +1,9 @@
-import 'package:applovinmax_mediation/applovinmax_mediation.dart';
-import 'package:applovinmax_mediation/shared/enums.dart';
-import 'package:applovinmax_mediation/shared/max_error.dart';
+import 'dart:convert';
+
+import 'applovinmax_mediation.dart';
+import 'shared/applovin_max_callback.dart';
+import 'shared/enums.dart';
+import 'shared/max_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,8 +21,18 @@ class ApplovinMaxBanner extends StatelessWidget {
     BannerAdSize.mrec: 'MREC',
     BannerAdSize.adaptive: 'ADAPTIVE',
   };
+
+  /// banner ad type [BannerAdSize enum]
   final BannerAdSize size;
+
+  /// ad unit id from the applovin ad unit
   final String adUnitId;
+
+  /// if need to trigger function for ad callback
+  /// send instance of a concrete class of [ApplovinMaxCallback] class.
+  /// [ApplovinMaxCallback] is a abstract class
+  /// create new class and extends it from [ApplovinMaxCallback] to
+  /// override its callback methods
   final ApplovinMaxCallback? listner;
 
   @override
@@ -42,15 +55,8 @@ class ApplovinMaxBanner extends StatelessWidget {
     required String adUnitId,
     ApplovinMaxCallback? callbacks,
   }) {
-    print("FLUTTER APPLOVIN : - DART SIDE - Callback listner registered");
     ApplovinMaxMediation.getChannel
         .setMethodCallHandler((MethodCall call) async {
-      print("FLUTTER APPLOVIN : - DART SIDE - " + call.method.toString());
-      print("FLUTTER APPLOVIN : - DART SIDE - " + call.arguments.toString());
-      print("FLUTTER APPLOVIN : - DART SIDE ad unit id : - " + adUnitId);
-      print("FLUTTER APPLOVIN : - DART SIDE ad unit id equals ? : - " +
-          (adUnitId == call.method).toString());
-      //
       if (call.method == adUnitId) {
         switch (call.arguments['callback']) {
           case 'onAdLoaded':
@@ -72,18 +78,19 @@ class ApplovinMaxBanner extends StatelessWidget {
             callbacks?.onAdCollapsed.call();
             break;
           case 'onAdLoadFailed':
-            callbacks?.onAdLoadFailed
-                .call(MaxError.fromMap(call.arguments['error']));
+            final error = jsonEncode(call.arguments['error']);
+            callbacks?.onAdLoadFailed.call(MaxError.fromMap(jsonDecode(error)));
             break;
           case 'onAdDisplayFailed':
+            final error = jsonEncode(call.arguments['error']);
             callbacks?.onAdDisplayFailed
-                .call(MaxError.fromMap(call.arguments['error']));
+                .call(MaxError.fromMap(jsonDecode(error)));
             break;
           default:
             break;
         }
       } else {
-        print("FLUTTER APPLOVIN : - DART SIDE - Ad unit id dosent match");
+        debugPrint("FLUTTER APPLOVIN :- Ad unit id dosent match");
       }
     });
   }

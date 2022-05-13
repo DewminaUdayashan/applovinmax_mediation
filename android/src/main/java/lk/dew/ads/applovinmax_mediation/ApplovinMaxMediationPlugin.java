@@ -2,8 +2,6 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -17,7 +15,6 @@ import java.util.HashMap;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -98,7 +95,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
             @Override
             public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                Log.d(TAG, "error: callback result"+errorMessage.toString()+ "\n "+errorDetails.toString());
+                Log.d(TAG, "error: callback result"+errorMessage+ "\n "+errorDetails);
             }
 
             @Override
@@ -109,9 +106,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
-        Log.d(TAG, "registerBannerFactory: - channel is null when registerBannerFactoryCalled ? :- " + (instance.channel == null));
         registry.registerViewFactory("/Banner", new BannerFactory(instance, channel));
-//        callback("0001", "testing gasa", null, instance);
     }
 
 
@@ -126,8 +121,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         activity = binding.getActivity();
         Log.d(TAG, "onAttachedToActivity: ======================================================");
         channel.setMethodCallHandler(this);
-//        if (bindingInstance != null)
-//            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
     }
 
     @Override

@@ -8,8 +8,8 @@ class MaxError {
 
   factory MaxError.fromMap(Map<String, dynamic> map) {
     return MaxError(
-      code: map['code'] as String,
-      message: map['message'] as String,
+      code: map['code'].toString(),
+      message: map['message'].toString(),
     );
   }
 

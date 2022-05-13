@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:applovinmax_mediation/shared/enums.dart';
-import 'package:applovinmax_mediation/shared/max_error.dart';
+import 'shared/enums.dart';
 import 'package:flutter/services.dart';
 
 class ApplovinMaxMediation {
@@ -26,26 +25,3 @@ class ApplovinMaxMediation {
     }
   }
 }
-
-// typedef AdCallback = void Function({
-//   Function? onAdReceived,
-//   Function? onDailedToReceiveAd,
-//   Function? onAdOpenedFullscreen,
-//   Function? onAdClosedFullscreen,
-//   Function? onAdLeftApplication,
-//   Function? onAdFailedToDisplay,
-//   Function? onAdClicked,
-//   Function? onAdDisplayed,
-//   Function? onAdHidden,
-//   Function? onDispose,
-// });
-
-
-    // Function? onAdLoaded,
-    // Function? onAdDisplayed,
-    // Function? onAdHidden,
-    // Function? onAdClicked,
-    // Function? onAdExpanded,
-    // Function? onAdCollapsed,
-    // Function(MaxError? error)? onAdLoadFailed,
-    // Function(MaxError? error)? onAdDisplayFailed,

@@ -3,13 +3,10 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
-import androidx.annotation.Nullable;
 
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
@@ -19,14 +16,11 @@ import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.sdk.AppLovinAdSize;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 import io.flutter.embedding.android.FlutterActivity;
-import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
 
 public class BannerAdView extends FlutterActivity implements PlatformView {
-    final static String TAG = "FLUTTER APPLOVIN : - ";
     final int viewId;
     final MaxAdView bannerView;
     AppLovinAdSize size;
@@ -34,13 +28,8 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     int width;
     String adUnitId;
     final ApplovinMaxMediationPlugin instance;
-    MethodChannel channel;
 
     public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
-        Log.d(TAG, "BannerAdView: The instance came from the params is null ? :- " );
-        Log.d(TAG, "BannerAdView: The channel came from the params is null ? :- ");
-
-        this.channel = channel;
         this.instance = instance;
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -53,7 +42,6 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         this.bannerView = new MaxAdView(adUnitId, context);
         try {
             if (args.get("size").equals("ADAPTIVE")) {
-                Log.d(TAG, "BannerAdView: ADAPTIVE BANNER CALLED");
                 height = MaxAdFormat.BANNER.getAdaptiveSize(instance.activity).getHeight();
                 bannerView.setExtraParameter("adaptive_banner", "true");
             } else {
@@ -70,54 +58,46 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
             @Override
             public void onAdExpanded(MaxAd ad) {
                 instance.callback(adUnitId, "onAdExpanded", null);
-                Log.d(TAG, "onAdExpanded: ");
             }
 
             @Override
             public void onAdCollapsed(MaxAd ad) {
                 instance.callback(adUnitId, "onAdCollapsed", null);
-                Log.d(TAG, "onAdCollapsed: ");
             }
 
             @Override
             public void onAdLoaded(MaxAd ad) {
-                Log.d(TAG, "onAdLoaded: ");
                 instance.callback(adUnitId, "onAdLoaded", null);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
-                Log.d(TAG, "onAdDisplayed: instance state " + (instance == null));
                 instance.callback(adUnitId, "onAdDisplayed", null);
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
                 instance.callback(adUnitId, "onAdHidden", null);
-                Log.d(TAG, "onAdHidden: ");
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
                 instance.callback(adUnitId, "onAdClicked", null);
-                Log.d(TAG, "onAdClicked: ");
             }
 
             @Override
             public void onAdLoadFailed(String adUnitId, MaxError error) {
-                Log.d(TAG, "onAdLoadFailed: ");
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage().replace(":",""));
+                err.put("message", error.getMessage().replace(":", ""));
                 instance.callback(adUnitId, "onAdLoadFailed", err);
             }
 
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-                Log.d(TAG, "onAdDisplayFailed: ");
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage().replace(":",""));
+                err.put("message", error.getMessage().replace(":", ""));
                 instance.callback(adUnitId, "onAdDisplayFailed", err);
             }
         });
@@ -139,26 +119,4 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         bannerView.destroy();
         instance.callback(adUnitId, "onAdViewDisposed", null);
     }
-
-
-//        if (channel != null)
-//            new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
-//                @Override
-//                public void success(@Nullable Object result) {
-//                    Log.d(TAG, "success: callback result");
-//                }
-//
-//                @Override
-//                public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-//                    Log.d(TAG, "error: callback result");
-//                }
-//
-//                @Override
-//                public void notImplemented() {
-//                    Log.d(TAG, "notImplemented: callback result");
-//                }
-//            }));
-//        else Log.d(TAG, "callback: CHANNEL WAS NULL WHEN TRYING TO INVOKE METHOD");
-
-
 }
