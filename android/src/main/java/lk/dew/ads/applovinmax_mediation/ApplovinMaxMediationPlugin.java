@@ -2,6 +2,8 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -31,13 +33,11 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     private ApplovinMaxMediationPlugin instance;
     public Context context;
     static public MethodChannel channel;
-    static public EventChannel eventChannel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
-    public EventChannel.EventSink eventSink;
 
     public ApplovinMaxMediationPlugin() {
-        Log.d(TAG, "ApplovinMaxMediationPlugin: ================ Applovin Mediation Plugin Initialized ================");
+        Log.d(TAG, "================ Applovin Mediation Plugin Initialized ================");
     }
 
     @Override
@@ -45,19 +45,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
-        eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "banner_event");
-        eventChannel.setStreamHandler(new EventChannel.StreamHandler() {
-            @Override
-            public void onListen(Object arguments, EventChannel.EventSink events) {
-                Log.d(TAG, "onListen: EVENT CHANNEL CONNECTED ====================");
-                eventSink = events;
-            }
 
-            @Override
-            public void onCancel(Object arguments) {
-
-            }
-        });
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -98,17 +86,11 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
-//        Log.d(TAG, "callback: CALLBACK METHOD CALLED.... unit id : " + (adUnitId) + ", callback : " + (callback) + "," +
-//                " error is null : " + (error == null) + ", is channel null ? :- " + (instance.channel == null));
-        Log.d(TAG, "callback: is channel null ? " + (channel == null));
-//        final HashMap<String, Object> data = new HashMap<>();
-//        data.put("callback", callback);
-//        if (error != null) {
-//            data.put("error", error);
-//        }
-//        /
-//        eventSink.success("EVENT SINK FOR FLUTTER : " + callback);
-        channel.invokeMethod(callback, null, new Result() {
+        final HashMap<String, Object> data = new HashMap<>();
+        data.put("callback", callback);
+        if (error != null)
+            data.put("error", error);
+        channel.invokeMethod(callback, data, new Result() {
             @Override
             public void success(@Nullable Object result) {
                 Log.d(TAG, "success: callback result");
@@ -124,26 +106,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 Log.d(TAG, "notImplemented: callback result");
             }
         });
-
-//        if (channel != null)
-//            new Handler(Looper.getMainLooper()).post(() -> channel.invokeMethod(adUnitId, data, new Result() {
-//                @Override
-//                public void success(@Nullable Object result) {
-//                    Log.d(TAG, "success: callback result");
-//                }
-//
-//                @Override
-//                public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-//                    Log.d(TAG, "error: callback result");
-//                }
-//
-//                @Override
-//                public void notImplemented() {
-//                    Log.d(TAG, "notImplemented: callback result");
-//                }
-//            }));
-//        else Log.d(TAG, "callback: CHANNEL WAS NULL WHEN TRYING TO INVOKE METHOD");
-
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
@@ -185,5 +147,5 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         Log.d(TAG, "onDetachedFromActivity: ========================================================");
     }
 
-   
+
 }
