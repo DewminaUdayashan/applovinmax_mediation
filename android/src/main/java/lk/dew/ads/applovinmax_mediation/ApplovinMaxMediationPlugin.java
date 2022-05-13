@@ -2,8 +2,10 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
@@ -17,26 +19,34 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.StandardMethodCodec;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 
 /**
  * ApplovinMaxMediationPlugin
  */
 public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
+    final static String TAG = "FLUTTER APPLOVIN : - ";
     private ApplovinMaxMediationPlugin instance;
     public Context context;
-    private MethodChannel channel;
+    static public MethodChannel channel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
+
+    public ApplovinMaxMediationPlugin() {
+        Log.d(TAG, "================ Applovin Mediation Plugin Initialized ================");
+    }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
-        channel = new MethodChannel(bindingInstance.getBinaryMessenger(), "applovinmax_mediation");
+        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
+
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
+        Log.d(TAG, "onAttachedToEngine: is channel null on initially : " + (channel == null));
     }
 
     @Override
@@ -68,49 +78,67 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 // dialog should be shown on the next application initialization
                 result.success("UNKNOWN");
             }
-            callback("1023", "CALLBACK TESTING WORKED", null);
         });
     }
 
 
     public void callback(String adUnitId, String callback, HashMap<String, String> error) {
-        final HashMap<String,Object> data = new HashMap<>();
+        final HashMap<String, Object> data = new HashMap<>();
         data.put("callback", callback);
-        if (error != null) {
+        if (error != null)
             data.put("error", error);
-        }
-        activity.runOnUiThread(() -> channel.invokeMethod(adUnitId, data));
+        channel.invokeMethod(adUnitId, data, new Result() {
+            @Override
+            public void success(@Nullable Object result) {
+                Log.d(TAG, "success: callback result");
+            }
+
+            @Override
+            public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
+                Log.d(TAG, "error: callback result"+errorMessage+ "\n "+errorDetails);
+            }
+
+            @Override
+            public void notImplemented() {
+                Log.d(TAG, "notImplemented: callback result");
+            }
+        });
     }
 
     public void registerBannerFactory(PlatformViewRegistry registry) {
-        registry.registerViewFactory("/Banner", new BannerFactory(instance));
+        registry.registerViewFactory("/Banner", new BannerFactory(instance, channel));
     }
 
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        channel.setMethodCallHandler(null);
+        Log.d(TAG, "onDetachedFromEngine: ");
+//        channel.setMethodCallHandler(null);
     }
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
-//        if (bindingInstance != null)
-//            registerBannerFactory(bindingInstance.getPlatformViewRegistry());
+        Log.d(TAG, "onAttachedToActivity: ======================================================");
+        channel.setMethodCallHandler(this);
     }
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
-
+        Log.d(TAG, "onDetachedFromActivityForConfigChanges: ============================================");
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+        Log.d(TAG, "onReattachedToActivityForConfigChanges: ============================================");
         activity = binding.getActivity();
+
     }
 
     @Override
     public void onDetachedFromActivity() {
-
+        Log.d(TAG, "onDetachedFromActivity: ========================================================");
     }
+
+
 }

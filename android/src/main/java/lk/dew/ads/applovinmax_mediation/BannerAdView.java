@@ -3,7 +3,6 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,11 @@ import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.sdk.AppLovinAdSize;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.platform.PlatformView;
 
 public class BannerAdView extends FlutterActivity implements PlatformView {
-//    final static String TAG = "FLUTTER APPLOVIN : - ";
     final int viewId;
     final MaxAdView bannerView;
     AppLovinAdSize size;
@@ -32,26 +29,25 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     String adUnitId;
     final ApplovinMaxMediationPlugin instance;
 
-    public BannerAdView(Context context, HashMap<String,String> args, ApplovinMaxMediationPlugin instance, int viewId) {
+    public BannerAdView(Context context, HashMap args, ApplovinMaxMediationPlugin instance, int viewId) {
         this.instance = instance;
         this.viewId = viewId;
         this.width = ViewGroup.LayoutParams.MATCH_PARENT;
         try {
-            this.adUnitId = args.get("UnitId");
+            this.adUnitId = args.get("adUnitId").toString();
         } catch (Exception e) {
             this.adUnitId = "UNIT_ID";
         }
 
         this.bannerView = new MaxAdView(adUnitId, context);
         try {
-            if (Objects.requireNonNull(args.get("size")).equals("ADAPTIVE")) {
-                Log.d("APPLOVINMAX FLUTTER", "BannerAdView: ADAPTIVE BANNER CALLED");
+            if (args.get("size").equals("ADAPTIVE")) {
                 height = MaxAdFormat.BANNER.getAdaptiveSize(instance.activity).getHeight();
                 bannerView.setExtraParameter("adaptive_banner", "true");
             } else {
                 this.height = getResources().getDimensionPixelSize(isTablet(context) ? 90 : 50);
             }
-            this.size = AppLovinAdSize.fromString(args.get("size"));
+            this.size = AppLovinAdSize.fromString(args.get("size").toString());
         } catch (Exception e) {
             this.size = AppLovinAdSize.BANNER;
         }
@@ -60,40 +56,40 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         this.bannerView.loadAd();
         bannerView.setListener(new MaxAdViewAdListener() {
             @Override
-                public void onAdExpanded(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdExpanded", null);
+            public void onAdExpanded(MaxAd ad) {
+                instance.callback(adUnitId, "onAdExpanded", null);
             }
 
             @Override
             public void onAdCollapsed(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdCollapsed", null);
+                instance.callback(adUnitId, "onAdCollapsed", null);
             }
 
             @Override
             public void onAdLoaded(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdLoaded", null);
+                instance.callback(adUnitId, "onAdLoaded", null);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdDisplayed", null);
+                instance.callback(adUnitId, "onAdDisplayed", null);
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdHidden", null);
+                instance.callback(adUnitId, "onAdHidden", null);
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                instance.callback(ad.getAdUnitId(), "onAdClicked", null);
+                instance.callback(adUnitId, "onAdClicked", null);
             }
 
             @Override
             public void onAdLoadFailed(String adUnitId, MaxError error) {
-                HashMap<String,String> err = new HashMap<>();
+                HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage());
+                err.put("message", error.getMessage().replace(":", ""));
                 instance.callback(adUnitId, "onAdLoadFailed", err);
             }
 
@@ -101,7 +97,7 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 HashMap<String, String> err = new HashMap<>();
                 err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage());
+                err.put("message", error.getMessage().replace(":", ""));
                 instance.callback(adUnitId, "onAdDisplayFailed", err);
             }
         });
@@ -123,5 +119,4 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         bannerView.destroy();
         instance.callback(adUnitId, "onAdViewDisposed", null);
     }
-
 }

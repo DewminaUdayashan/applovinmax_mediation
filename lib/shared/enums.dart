@@ -1,3 +1,5 @@
+import 'dart:core';
+
 enum BannerAdSize {
   banner,
   adaptive,
@@ -10,8 +12,4 @@ enum ConsentDialogState {
   applies,
   doesNotApply,
   unknown,
-}
-
-enum AppLovinAdListener {
-  adReceived,
 }
