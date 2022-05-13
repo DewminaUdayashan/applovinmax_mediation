@@ -26,13 +26,15 @@ import io.flutter.plugin.platform.PlatformViewRegistry;
 /**
  * ApplovinMaxMediationPlugin
  */
-public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
+public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware, EventChannel.StreamHandler {
     final static String TAG = "FLUTTER APPLOVIN : - ";
     private ApplovinMaxMediationPlugin instance;
     public Context context;
     static public MethodChannel channel;
+    static public EventChannel eventChannel;
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
+    public EventChannel.EventSink eventSink;
 
     public ApplovinMaxMediationPlugin() {
         Log.d(TAG, "ApplovinMaxMediationPlugin: ================ Applovin Mediation Plugin Initialized ================");
@@ -43,7 +45,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         context = flutterPluginBinding.getApplicationContext();
         bindingInstance = flutterPluginBinding;
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "applovinmax_mediation", StandardMethodCodec.INSTANCE);
-
+        eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "banner_event");
+        eventChannel.setStreamHandler(this);
         channel.setMethodCallHandler(this);
         instance = new ApplovinMaxMediationPlugin();
         registerBannerFactory(flutterPluginBinding.getPlatformViewRegistry());
@@ -93,7 +96,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 //            data.put("error", error);
 //        }
 //        /
-    
+        eventSink.success("EVENT SINK FOR FLUTTER : " + callback);
         channel.invokeMethod(callback, null, new Result() {
             @Override
             public void success(@Nullable Object result) {
@@ -169,5 +172,15 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     @Override
     public void onDetachedFromActivity() {
         Log.d(TAG, "onDetachedFromActivity: ========================================================");
+    }
+
+    @Override
+    public void onListen(Object arguments, EventChannel.EventSink events) {
+        eventSink = events;
+    }
+
+    @Override
+    public void onCancel(Object arguments) {
+
     }
 }
