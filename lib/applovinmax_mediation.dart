@@ -82,8 +82,24 @@ class ApplovinMaxMediation {
     // _setInterCallbacks(adUnitId, listener);
   }
 
-  static Future<void> _setInterCallbacks(
-      String adUnitId, ApplovinMaxCallback? callbacks) async {
+  static Future<void> createRewardedAd({
+    required String adUnitId,
+    ApplovinMaxRewardedCallback? listener,
+  }) async {
+    await _channel.invokeMethod('createRewardedAd', adUnitId);
+    _setRewardedCallbacks(adUnitId, listener);
+  }
+
+  static Future<bool> isRewardedAdReady() async {
+    return await _channel.invokeMethod('isRewardedAdReady');
+  }
+
+  static Future<void> showRewardedAd() async {
+    await _channel.invokeMethod('showRewardedAd');
+  }
+
+  static Future<void> _setRewardedCallbacks(
+      String adUnitId, ApplovinMaxRewardedCallback? callbacks) async {
     //
     getChannel.setMethodCallHandler((MethodCall call) async {
       print(
@@ -116,6 +132,12 @@ class ApplovinMaxMediation {
             final error = jsonEncode(call.arguments['error']);
             callbacks?.onAdDisplayFailed
                 .call(MaxError.fromMap(jsonDecode(error)));
+            break;
+          case 'onRewardedVideoCompleted':
+            break;
+          case 'onUserRewarded':
+            break;
+          case 'onRewardedVideoStarted':
             break;
           default:
             break;
