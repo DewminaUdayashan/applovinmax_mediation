@@ -11,7 +11,6 @@ class ApplovinMaxBanner extends StatelessWidget {
   ApplovinMaxBanner({
     required this.size,
     required this.adUnitId,
-    this.listner,
     Key? key,
   }) : super(key: key);
   final Map<BannerAdSize, String> sizes = {
@@ -33,7 +32,7 @@ class ApplovinMaxBanner extends StatelessWidget {
   /// [ApplovinMaxCallback] is an abstract class
   /// create new class and extends it from [ApplovinMaxCallback] to
   /// override its callback methods
-  final ApplovinMaxCallback? listner;
+  // final ApplovinMaxCallback? listner;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +42,10 @@ class ApplovinMaxBanner extends StatelessWidget {
       creationParams: {'size': sizes[size], 'adUnitId': adUnitId},
       creationParamsCodec: const StandardMessageCodec(),
       onPlatformViewCreated: (int vi) {
-        _setBannerAdCallbacks(
-          adUnitId: adUnitId,
-          callbacks: listner,
-        );
+        // _setBannerAdCallbacks(
+        //   adUnitId: adUnitId,
+        //   callbacks: listner,
+        // );
       },
     );
   }

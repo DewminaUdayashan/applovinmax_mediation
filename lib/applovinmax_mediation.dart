@@ -76,10 +76,10 @@ class ApplovinMaxMediation {
   /// override its callback methods
   static Future<void> showInterstitialAd({
     required String adUnitId,
-    ApplovinMaxCallback? listener,
+    // ApplovinMaxCallback? listener,
   }) async {
     await _channel.invokeMethod('showInterstitialAd', adUnitId);
-    _setInterCallbacks(adUnitId, listener);
+    // _setInterCallbacks(adUnitId, listener);
   }
 
   static Future<void> _setInterCallbacks(
