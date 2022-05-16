@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinUserService;
 
 import java.util.HashMap;
 
@@ -75,10 +76,20 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 rewardedAd.createRewardedAd(call.arguments.toString(),activity);
             case "isRewardedAdReady":
                 result.success(rewardedAd.isReady());
+            case "showConsentDialog":
+                showConsentDialog();
             default:
                 result.notImplemented();
                 break;
         }
+    }
+
+
+    private void showConsentDialog(){
+        AppLovinUserService userService = AppLovinSdk.getInstance( activity ).getUserService();
+        userService.showConsentDialog( activity, () -> {
+
+        });
     }
 
     private boolean isInterReady() {
@@ -107,6 +118,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
             switch (config.getConsentDialogState()) {
                 case APPLIES:
                     // Show user consent dialog
+                    if(activity!=null)
+                    AppLovinSdk.getInstance( activity ).getUserService().preloadConsentDialog();
                     result.success("APPLIES");
                     break;
                 case DOES_NOT_APPLY:
