@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinUserService;
 
 import java.util.HashMap;
 
@@ -33,6 +34,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
     private InterAd interstitialAd;
+    private RewardedAd rewardedAd;
 
     public ApplovinMaxMediationPlugin() {
         Log.d(TAG, "================ Applovin Mediation Plugin Initialized ================");
@@ -68,10 +70,26 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 result.success(isInterReady());
             case "showInterstitialAd":
                 showInter(call.arguments);
+            case "showRewardedAd":
+                rewardedAd.showRewardedAd();
+            case "createRewardedAd":
+                rewardedAd.createRewardedAd(call.arguments.toString(),activity);
+            case "isRewardedAdReady":
+                result.success(rewardedAd.isReady());
+            case "showConsentDialog":
+                showConsentDialog();
             default:
                 result.notImplemented();
                 break;
         }
+    }
+
+
+    private void showConsentDialog(){
+        AppLovinUserService userService = AppLovinSdk.getInstance( activity ).getUserService();
+        userService.showConsentDialog( activity, () -> {
+
+        });
     }
 
     private boolean isInterReady() {
@@ -100,6 +118,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
             switch (config.getConsentDialogState()) {
                 case APPLIES:
                     // Show user consent dialog
+                    if(activity!=null)
+                    AppLovinSdk.getInstance( activity ).getUserService().preloadConsentDialog();
                     result.success("APPLIES");
                     break;
                 case DOES_NOT_APPLY:
@@ -158,6 +178,7 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         activity = binding.getActivity();
         channel.setMethodCallHandler(this);
         interstitialAd = new InterAd(instance);
+        rewardedAd = new RewardedAd(instance);
     }
 
     @Override

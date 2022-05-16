@@ -37,6 +37,10 @@ class ApplovinMaxMediation {
     }
   }
 
+  static Future<void> showConsentDialog() async {
+    await _channel.invokeMethod('showConsentDialog');
+  }
+
   /// pass bool to set applovin sdk verbose logging
   /// to turn on or off
   /// can also set from manifest :- [https://dash.applovin.com/documentation/mediation/android/getting-started/advanced-settings]
@@ -82,8 +86,24 @@ class ApplovinMaxMediation {
     // _setInterCallbacks(adUnitId, listener);
   }
 
-  static Future<void> _setInterCallbacks(
-      String adUnitId, ApplovinMaxCallback? callbacks) async {
+  static Future<void> createRewardedAd({
+    required String adUnitId,
+    ApplovinMaxRewardedCallback? listener,
+  }) async {
+    _setRewardedCallbacks(adUnitId, listener);
+    await _channel.invokeMethod('createRewardedAd', adUnitId);
+  }
+
+  static Future<bool> isRewardedAdReady() async {
+    return await _channel.invokeMethod('isRewardedAdReady');
+  }
+
+  static Future<void> showRewardedAd() async {
+    await _channel.invokeMethod('showRewardedAd');
+  }
+
+  static Future<void> _setRewardedCallbacks(
+      String adUnitId, ApplovinMaxRewardedCallback? callbacks) async {
     //
     getChannel.setMethodCallHandler((MethodCall call) async {
       print(
@@ -116,6 +136,12 @@ class ApplovinMaxMediation {
             final error = jsonEncode(call.arguments['error']);
             callbacks?.onAdDisplayFailed
                 .call(MaxError.fromMap(jsonDecode(error)));
+            break;
+          case 'onRewardedVideoCompleted':
+            break;
+          case 'onUserRewarded':
+            break;
+          case 'onRewardedVideoStarted':
             break;
           default:
             break;
