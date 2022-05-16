@@ -37,10 +37,6 @@ class ApplovinMaxMediation {
     }
   }
 
-  static Future<void> showConsentDialog() async {
-    await _channel.invokeMethod('showConsentDialog');
-  }
-
   /// pass bool to set applovin sdk verbose logging
   /// to turn on or off
   /// can also set from manifest :- [https://dash.applovin.com/documentation/mediation/android/getting-started/advanced-settings]

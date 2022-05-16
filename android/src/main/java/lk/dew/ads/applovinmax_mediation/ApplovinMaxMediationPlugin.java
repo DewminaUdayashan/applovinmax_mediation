@@ -73,24 +73,15 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
             case "showRewardedAd":
                 rewardedAd.showRewardedAd();
             case "createRewardedAd":
-                rewardedAd.createRewardedAd(call.arguments.toString(),activity);
+                rewardedAd.createRewardedAd(call.arguments.toString(), activity);
             case "isRewardedAdReady":
                 result.success(rewardedAd.isReady());
-            case "showConsentDialog":
-                showConsentDialog();
             default:
                 result.notImplemented();
                 break;
         }
     }
 
-
-    private void showConsentDialog(){
-        AppLovinUserService userService = AppLovinSdk.getInstance( activity ).getUserService();
-        userService.showConsentDialog( activity, () -> {
-
-        });
-    }
 
     private boolean isInterReady() {
         return interstitialAd.isReady();
@@ -118,8 +109,8 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
             switch (config.getConsentDialogState()) {
                 case APPLIES:
                     // Show user consent dialog
-                    if(activity!=null)
-                    result.success("APPLIES");
+                    if (activity != null)
+                        result.success("APPLIES");
                     break;
                 case DOES_NOT_APPLY:
                     // No need to show consent dialog, proceed with initialization
