@@ -119,7 +119,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 case APPLIES:
                     // Show user consent dialog
                     if(activity!=null)
-                    AppLovinSdk.getInstance( activity ).getUserService().preloadConsentDialog();
                     result.success("APPLIES");
                     break;
                 case DOES_NOT_APPLY:
