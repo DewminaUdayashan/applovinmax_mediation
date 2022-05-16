@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:applovinmax_mediation/shared/applovin_max_callback.dart';
-import 'package:applovinmax_mediation/shared/max_error.dart';
 import 'package:flutter/foundation.dart';
-
-import 'shared/enums.dart';
 import 'package:flutter/services.dart';
+
+import 'shared/applovin_max_callback.dart';
+import 'shared/enums.dart';
+import 'shared/max_error.dart';
 
 class ApplovinMaxMediation {
   static const MethodChannel _channel = MethodChannel('applovinmax_mediation');
