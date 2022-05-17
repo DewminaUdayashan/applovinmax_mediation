@@ -90,12 +90,12 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
 
             @Override
             public void onAdLoadFailed(String adUnitId, MaxError error) {
-                Log.d(TAG, "onAdLoadFailed: "+error.getMessage());
+                Log.d(TAG, "onAdLoadFailed: " + error.getMessage()+ " " + error.getCode());
             }
 
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-                Log.d(TAG, "onAdDisplayFailed: "+error.getMessage());
+                Log.d(TAG, "onAdDisplayFailed: " + error.getMessage() + " " + error.getCode());
             }
         });
     }

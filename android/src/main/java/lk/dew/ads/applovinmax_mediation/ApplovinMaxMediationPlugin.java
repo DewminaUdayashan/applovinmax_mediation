@@ -61,8 +61,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 break;
             case "setVerboseLogging":
                 setVerboseLogging((boolean) call.arguments);
-            case "setHasUserConsent":
-                setHaseUserConsent((boolean) call.arguments);
             case "createInterstitialAd":
                 createInter(call.arguments.toString());
             case "isInterstitialAdReady":
@@ -86,10 +84,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
 
     private void createInter(String adUnitId) {
         interstitialAd.createInterstitialAd(activity, adUnitId);
-    }
-
-    private void setHaseUserConsent(boolean arguments) {
-        AppLovinPrivacySettings.setHasUserConsent(arguments, context);
     }
 
     private void setVerboseLogging(boolean arguments) {
