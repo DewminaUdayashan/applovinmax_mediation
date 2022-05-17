@@ -34,7 +34,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     public Activity activity;
     public FlutterPluginBinding bindingInstance;
     private InterAd interstitialAd;
-    private RewardedAd rewardedAd;
 
     public ApplovinMaxMediationPlugin() {
         Log.d(TAG, "================ Applovin Mediation Plugin Initialized ================");
@@ -70,12 +69,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
                 result.success(isInterReady());
             case "showInterstitialAd":
                 showInter(call.arguments);
-            case "showRewardedAd":
-                rewardedAd.showRewardedAd();
-            case "createRewardedAd":
-                rewardedAd.createRewardedAd(call.arguments.toString(), activity);
-            case "isRewardedAdReady":
-                result.success(rewardedAd.isReady());
             default:
                 result.notImplemented();
                 break;
@@ -168,7 +161,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
         activity = binding.getActivity();
         channel.setMethodCallHandler(this);
         interstitialAd = new InterAd(instance);
-        rewardedAd = new RewardedAd(instance);
     }
 
     @Override
