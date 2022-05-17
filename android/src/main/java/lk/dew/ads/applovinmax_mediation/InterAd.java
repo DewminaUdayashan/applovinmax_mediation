@@ -2,6 +2,7 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 public class InterAd
         implements MaxAdListener {
-    private static final String TAG = "Flutter Applovin : - InterAD : ";
+    private static final String TAG = "Applovin:inter : ";
     private MaxInterstitialAd interstitialAd;
     private int retryAttempt;
     private ApplovinMaxMediationPlugin instance;
@@ -51,17 +52,14 @@ public class InterAd
 
         // Reset retry attempt
         retryAttempt = 0;
-        instance.callback(maxAd.getAdUnitId(), "onAdLoaded", null);
+        Log.d(TAG, "onAdLoaded: ");
     }
 
     @Override
     public void onAdLoadFailed(final String adUnitId, final MaxError error) {
         // Interstitial ad failed to load
         // AppLovin recommends that you retry with exponentially higher delays up to a maximum delay (in this case 64 seconds)
-        final HashMap<String, String> err = new HashMap<>();
-        err.put("code", String.valueOf(error.getCode()));
-        err.put("message", error.getMessage().replace(":", ""));
-        instance.callback(adUnitId, "onAdLoadFailed", err);
+        Log.d(TAG, "onAdLoadFailed: ");
         retryAttempt++;
         long delayMillis = TimeUnit.SECONDS.toMillis((long) Math.pow(2, Math.min(6, retryAttempt)));
 
@@ -71,27 +69,21 @@ public class InterAd
     @Override
     public void onAdDisplayFailed(final MaxAd maxAd, final MaxError error) {
         // Interstitial ad failed to display. AppLovin recommends that you load the next ad.
-        final HashMap<String, String> err = new HashMap<>();
-        err.put("code", String.valueOf(error.getCode()));
-        err.put("message", error.getMessage().replace(":", ""));
-        instance.callback(maxAd.getAdUnitId(), "onAdLoadFailed", err);
-        interstitialAd.loadAd();
+        Log.d(TAG, "onAdDisplayFailed: ");
     }
 
     @Override
     public void onAdDisplayed(final MaxAd maxAd) {
-        instance.callback(maxAd.getAdUnitId(), "onAdDisplayed", null);
+        Log.d(TAG, "onAdDisplayed: ");
     }
 
     @Override
     public void onAdClicked(final MaxAd maxAd) {
-        instance.callback(maxAd.getAdUnitId(), "onAdClicked", null);
+        Log.d(TAG, "onAdClicked: ");
     }
 
     @Override
     public void onAdHidden(final MaxAd maxAd) {
-        // Interstitial ad is hidden. Pre-load the next ad
-        instance.callback(maxAd.getAdUnitId(), "onAdHidden", null);
-        interstitialAd.loadAd();
+        Log.d(TAG, "onAdHidden: ");
     }
 }

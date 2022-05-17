@@ -3,6 +3,7 @@ package lk.dew.ads.applovinmax_mediation;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.plugin.platform.PlatformView;
 
 public class BannerAdView extends FlutterActivity implements PlatformView {
+    private static final String TAG = "Applovin:Banner- ";
     final int viewId;
     final MaxAdView bannerView;
     AppLovinAdSize size;
@@ -57,48 +59,43 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
         bannerView.setListener(new MaxAdViewAdListener() {
             @Override
             public void onAdExpanded(MaxAd ad) {
-                instance.callback(adUnitId, "onAdExpanded", null);
+                Log.d(TAG, "onAdExpanded: ");
             }
 
             @Override
             public void onAdCollapsed(MaxAd ad) {
-                instance.callback(adUnitId, "onAdCollapsed", null);
+                Log.d(TAG, "onAdCollapsed: ");
+
             }
 
             @Override
             public void onAdLoaded(MaxAd ad) {
-                instance.callback(adUnitId, "onAdLoaded", null);
+                Log.d(TAG, "onAdLoaded: ");
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
-                instance.callback(adUnitId, "onAdDisplayed", null);
+                Log.d(TAG, "onAdDisplayed: ");
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
-                instance.callback(adUnitId, "onAdHidden", null);
+                Log.d(TAG, "onAdHidden: ");
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                instance.callback(adUnitId, "onAdClicked", null);
+                Log.d(TAG, "onAdClicked: ");
             }
 
             @Override
             public void onAdLoadFailed(String adUnitId, MaxError error) {
-                HashMap<String, String> err = new HashMap<>();
-                err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage().replace(":", ""));
-                instance.callback(adUnitId, "onAdLoadFailed", err);
+                Log.d(TAG, "onAdLoadFailed: ");
             }
 
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-                HashMap<String, String> err = new HashMap<>();
-                err.put("code", String.valueOf(error.getCode()));
-                err.put("message", error.getMessage().replace(":", ""));
-                instance.callback(adUnitId, "onAdDisplayFailed", err);
+                Log.d(TAG, "onAdDisplayFailed: ");
             }
         });
     }

@@ -119,33 +119,6 @@ public class ApplovinMaxMediationPlugin implements FlutterPlugin, MethodCallHand
     }
 
 
-    public void callback(String adUnitId, String callback, HashMap<String, String> error) {
-    }
-
-    public void rewardedCallback(String adUnitId, String callback, HashMap<String, String> error) {
-        Log.d(TAG, "callback: " + adUnitId + ",");
-        final HashMap<String, Object> data = new HashMap<>();
-        data.put("callback", callback);
-        if (error != null)
-            data.put("error", error);
-        channel.invokeMethod(adUnitId, data, new Result() {
-            @Override
-            public void success(@Nullable Object result) {
-                Log.d(TAG, "success: callback result");
-            }
-
-            @Override
-            public void error(String errorCode, @Nullable String errorMessage, @Nullable Object errorDetails) {
-                Log.d(TAG, "error: callback result" + errorMessage + "\n " + errorDetails);
-            }
-
-            @Override
-            public void notImplemented() {
-                Log.d(TAG, "notImplemented: callback result");
-            }
-        });
-    }
-
     public void registerBannerFactory(PlatformViewRegistry registry) {
         registry.registerViewFactory("/Banner", new BannerFactory(instance, channel));
     }
