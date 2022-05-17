@@ -114,6 +114,5 @@ public class BannerAdView extends FlutterActivity implements PlatformView {
     @Override
     public void dispose() {
         bannerView.destroy();
-        instance.callback(adUnitId, "onAdViewDisposed", null);
     }
 }
